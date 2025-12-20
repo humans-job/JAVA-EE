@@ -5,12 +5,12 @@ CREATE TABLE sys_dept (
     dept_type   TINYINT COMMENT '部门类型：1=兵团机关, 2=师, 3=团, 4=营/连/分队',
     ancestors   VARCHAR(200) COMMENT '子级列表 (id查方便查询下级)',
     sort_order  INT COMMENT '显示顺序',
-    region_shape TEXT COMMENT '管辖区域形状数据 (我也不知道记什么，方形，圆形，不规则图形都得单算)',
+    region_shape TEXT COMMENT '管辖区域形状数据 (我也不知道记什么，方形，圆形，不规则图形都得单算)'
 );
 
 CREATE TABLE sys_dept_belong (
-    id BIGINT COMMENT '下级id'
-    parent_id BIGINT COMMENT '上级id'
+    id BIGINT COMMENT '下级id',
+    parent_id BIGINT COMMENT '上级id',
     PRIMARY KEY (id, parent_id)
 );
 
@@ -28,7 +28,7 @@ CREATE TABLE sys_user (
 );
 
 CREATE TABLE biz_militia_info (
-    id          BIGINT PRIMARY KEY,'民兵id'
+    id          BIGINT PRIMARY KEY COMMENT '民兵id',
     user_id     BIGINT COMMENT '外键，关联用户表ID',
     dept_id     BIGINT COMMENT '所属单位ID',
     id_card     VARCHAR(20) COMMENT '身份证号',
@@ -39,7 +39,7 @@ CREATE TABLE biz_militia_info (
     -- 有什么个人信息再加
     audit_status TINYINT DEFAULT 0 COMMENT '状态：0=草稿/导入, 1=待师部审核, 2=已归档, 3=驳回',
     audit_feedback VARCHAR(255) COMMENT '审核反馈意见',
-    audit_dept BIGINT COMMENT,'审核的师部id',
+    audit_dept BIGINT COMMENT '审核的师部id',
     create_by   BIGINT COMMENT '录入(团组织ID)',
     create_time DATETIME
 );
@@ -50,14 +50,14 @@ CREATE TABLE biz_notice (
     content     TEXT COMMENT '内容 (富文本)',
     notice_type TINYINT COMMENT '类型：1=通知公告, 2=教育学习, 3=团场内部通知',
     sender_dept_id BIGINT COMMENT '发布单位ID',
-    create_time DATETIME,'创建时间'
+    create_time DATETIME COMMENT '创建时间',
     status      TINYINT DEFAULT 0 COMMENT '0=正常, 1=完成'
 );
 
-//我看需要记人数，感觉还是得单开，到时候计算数量直接查id加判断是否已读就行，查询计数还能复用
-//然后就是正好靠着这个发给接收人，创建档案同时查询下级id(直接复用)创建biz_notice_record数据，然后下级通过biz_notice_record查询档案并计算数量，当全部学完就清空对应档案id的表
+-- 我看需要记人数，感觉还是得单开，到时候计算数量直接查id加判断是否已读就行，查询计数还能复用
+-- 然后就是正好靠着这个发给接收人，创建档案同时查询下级id(直接复用)创建biz_notice_record数据，然后下级通过biz_notice_record查询档案并计算数量，当全部学完就清空对应档案id的表
 CREATE TABLE biz_notice_record (
-    notice_id   BIGINT, '档案id'
+    notice_id   BIGINT  COMMENT '档案id',
     user_id     BIGINT COMMENT '接收人ID',
     is_read     TINYINT DEFAULT 0 COMMENT '0=未读, 1=已读',
     read_time   DATETIME COMMENT '阅读时间',
