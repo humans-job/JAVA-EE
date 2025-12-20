@@ -9,8 +9,6 @@
 
 - **表现层**：Vue + Vue Router + Element UI（地图用 Leaflet / 高德 API）
 
-- **网关层**：Spring Cloud Gateway（统一认证、路由转发、限流，适配单点登录）
-
 - 业务服务层
 
   ：按 6 大模块拆分为 6 个微服务（可合并通用模块）
