@@ -151,7 +151,7 @@
 | -------- | -------- | -------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | POST     |          | 提交请假申请   | userId、deptId、reason、startTime、endTime                   | `{code:200, msg:"申请提交成功"}`                             |
 | POST     |          | 审批请假       | leaveId、status (1 = 通过 / 2 = 驳回)、approveBy、approveOpinion | `{code:200, msg:"审批完成"}`                                 |
-| PUT      |          | 民兵销假       | leaveId、reportBackLocation (定位)、userId                   | `{code:200, msg:"销假提交成功"}`                             |
+| PUT      |          | 民兵销假       | leaveId、reportBackLocation (定位)                           | `{code:200, msg:"销假提交成功"}`                             |
 | POST     |          | 确认销假       | leaveId、confirmBy (确认人 ID)                               | `{code:200, msg:"销假确认成功"}`                             |
 | GET      |          | 查询请销假台账 | deptId、month (如 2025-12)、pageNum/pageSize                 | `{code:200, msg:"查询成功", data:{list:[...], stat:{applyCount:20, passCount:18}}}` |
 
