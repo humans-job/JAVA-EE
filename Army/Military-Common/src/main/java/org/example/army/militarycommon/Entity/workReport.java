@@ -1,0 +1,24 @@
+package org.example.army.militarycommon.Entity;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
+import java.time.LocalDateTime;
+
+@Data
+@TableName("biz_work_report")
+public class workReport {
+    @TableId(value = "report_id", type = IdType.AUTO) // 明确指定主键列名，如果是雪花算法用 ASSIGN_ID
+    private Long reportId;
+    private Long deptId;
+    private String title;
+    private String content;
+    private String filePath;
+    private int reportFile;
+    private int reportType;
+    private String reportMonth;
+    private int status;
+    private Long approveDeptId;
+    private LocalDateTime approveTime;
+    private LocalDateTime createTime;
+}
