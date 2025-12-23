@@ -15,14 +15,14 @@ public class militiaInfo  {
     private Long id;
     private Long userId;
     private Long deptId;
-    private String id_card;
+    private String idCard;
     private String phone;
     private String address;
-    private String politic_ststus;
-    private Date join_time;
-    private int audit_status;
-    private String audit_feedback;
-    private Long audit_dept;
-    private Long create_dept;
-    private Date create_time;
+    private String politicStstus;
+    private Date joinTime;
+    private int auditStatus;
+    private String auditFeedback;
+    private Long auditDept;
+    private Long createDept;
+    private Date createTime;
 }
