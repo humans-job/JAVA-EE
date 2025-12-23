@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 public class noticeRecord  {
     @TableField("notice_id") // 假设id是复合主键的一部分
     private Long noticeId;// 明确指定主键列名，如果是雪花算法用 ASSIGN_ID
-    @TableField("notice_id") // 假设id是复合主键的一部分
+    @TableField("user_id") // 假设id是复合主键的一部分
     private Long userId;
 
     private int isRead;
