@@ -8,7 +8,7 @@
 
     <!-- 引入其他模块 -->
     <dependency>
-        <groupId>com.military</groupId>
+        <groupId>com.1</groupId>
         <artifactId>military-system</artifactId>
     </dependency>
     <dependency>
