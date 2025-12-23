@@ -94,13 +94,13 @@
 
 #### 3. 接口设计
 
-| 请求方式 | 接口路径 | 功能描述     | 核心参数                                                     | 返回示例                                                  |
-| -------- | -------- | ------------ | ------------------------------------------------------------ | --------------------------------------------------------- |
-| POST     |          | 发布通知     | title、content、noticeType (1 = 公告 / 2 = 教育)、senderDeptId (师部 ID)、receiveDeptIds (接收团 ID 列表) | `{code:200, msg:"发布成功", data:{...}}`                  |
-| GET      |          | 查询通知列表 | noticeType、pageNum/pageSize                                 | `{code:200, msg:"查询成功", data:{list:[...], total:20}}` |
-| PUT      |          | 标记已读     | noticeId、userId (当前用户)                                  | `{code:200, msg:"标记成功"}`                              |
-| GET      |          | 阅读反馈查询 | noticeId、readStatus (0 = 未读 / 1 = 已读)                   | `{code:200, msg:"查询成功", data:{userList:[...]}}`       |
-| POST     |          | 催办提醒     | noticeId、userIds (未读用户列表)                             | `{code:200, msg:"提醒发送成功", data:{count:200}}`        |
+| 请求方式 | 接口路径 | 功能描述     | 核心参数                                         | 返回示例                                                  |
+| -------- | -------- | ------------ | ------------------------------------------------ | --------------------------------------------------------- |
+| POST     |          | 发布通知     | title、content、noticeType (1 = 公告 / 2 = 教育) | `{code:200, msg:"发布成功", data:{...}}`                  |
+| GET      |          | 查询通知列表 | noticeType、pageNum/pageSize                     | `{code:200, msg:"查询成功", data:{list:[...], total:20}}` |
+| PUT      |          | 标记已读     | noticeId、userId (当前用户)                      | `{code:200, msg:"标记成功"}`                              |
+| GET      |          | 阅读反馈查询 | noticeId、readStatus (0 = 未读 / 1 = 已读)       | `{code:200, msg:"查询成功", data:{userList:[...]}}`       |
+| POST     |          | 催办提醒     | noticeId                                         | `{code:200, msg:"提醒发送成功", data:{count:200}}`        |
 
 ### 模块四：工作与报表管理
 
