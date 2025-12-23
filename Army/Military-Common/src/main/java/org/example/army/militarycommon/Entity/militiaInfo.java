@@ -9,7 +9,7 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-@TableName("biz_notice")
+@TableName("biz_militia_info")
 public class militiaInfo  {
     @TableId(value = "id", type = IdType.AUTO) // 明确指定主键列名，如果是雪花算法用 ASSIGN_ID
     private Long id;
