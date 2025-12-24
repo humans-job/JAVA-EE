@@ -4,17 +4,11 @@
   <component name="MavenProjectsManager">
     <option name="originalFiles">
       <list>
+        <option value="$PROJECT_DIR$/Army/Military-Common/pom.xml" />
         <option value="$PROJECT_DIR$/Army/pom.xml" />
-        <option value="$PROJECT_DIR$/Army/MilitaryCommon/pom.xml" />
-        <option value="$PROJECT_DIR$/Army/Military Common/pom.xml" />
+        <option value="$PROJECT_DIR$/Army/Military-Notice/pom.xml" />
         <option value="$PROJECT_DIR$/Army/Military-Notice/pom.xml" />
       </list>
-    </option>
-    <option name="ignoredFiles">
-      <set>
-        <option value="$PROJECT_DIR$/Army/Military Common/pom.xml" />
-        <option value="$PROJECT_DIR$/Army/MilitaryCommon/pom.xml" />
-      </set>
     </option>
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_23" default="true" project-jdk-name="openjdk-23" project-jdk-type="JavaSDK">

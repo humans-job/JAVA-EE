@@ -14,7 +14,6 @@ public class workReport {
     private String title;
     private String content;
     private String filePath;
-    private Integer reportFile;
     private Integer reportType;
     private String reportMonth;
     private Integer status;

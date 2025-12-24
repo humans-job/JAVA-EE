@@ -9,14 +9,14 @@ import lombok.Data;
 @Data
 @TableName("sys_dept")
 public class Dept {
-    @TableId(value = "id", type = IdType.AUTO) // 明确指定主键列名，如果是雪花算法用 ASSIGN_ID
+    @TableId(value = "dept_id", type = IdType.AUTO) // 明确指定主键列名，如果是雪花算法用 ASSIGN_ID
     private Long deptId;
     private Long parentId;
     private String deptName;
     private Integer deptType;
     private String ancestors;
     private Integer sortOrder;
-    private Point regionCenter;
     private Geometry regionShape;
+    private Point regionCenter;
     private Integer regionRadius;
 }

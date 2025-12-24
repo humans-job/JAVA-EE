@@ -54,7 +54,6 @@ public class NoticeServiceImpl implements NoticeService {
         LambdaQueryWrapper<deptRelation> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(deptRelation::getParentId, senderDeptId);
         List<deptRelation> allDeptBelongs = deptRelationMapper.selectList(queryWrapper);
-        System.out.println(allDeptBelongs);
         List<Long> allDeptIds = new ArrayList<>();
         for(deptRelation b : allDeptBelongs){
             allDeptIds.add(b.getChildId());
@@ -100,7 +99,7 @@ public class NoticeServiceImpl implements NoticeService {
         if (req.getNoticeType() != null) {
             // 不写 join / XML，用子查询方式筛 noticeId
             rw.inSql(noticeRecord::getNoticeId,
-                    "select notice_id from biz_notice where notice_type = " + req.getNoticeType());
+                    "select notice_id from biz_notice where type = " + req.getNoticeType());
         }
 
         Page<noticeRecord> page = new Page<>(req.getPageNum(), req.getPageSize());

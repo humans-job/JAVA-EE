@@ -46,6 +46,11 @@
                 <artifactId>Military-Common</artifactId>
                 <version>${army.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.example</groupId>
+                <artifactId>Military-Notice</artifactId>
+                <version>${army.version}</version>
+            </dependency>
             <!--<dependency>
                 <groupId>org.example</groupId>
                 <artifactId>army-framework</artifactId>
@@ -83,7 +88,7 @@
             <dependency>
                 <groupId>org.springframework.security</groupId>
                 <artifactId>spring-security-webauthn</artifactId>
-                <version>6.3.1</version>
+                <version>7.0.0</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

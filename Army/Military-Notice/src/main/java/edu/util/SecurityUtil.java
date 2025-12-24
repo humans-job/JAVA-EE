@@ -4,11 +4,11 @@ package edu.util;
 public class SecurityUtil {
     public static Long getUserId() {
         // TODO: 从当前登录态获取
-        return 1L;
+        return 1002L;
     }
 
     public static Long getDeptId() {
         // TODO: 从当前登录态获取
-        return 1L;
+        return 1002L;
     }
 }
