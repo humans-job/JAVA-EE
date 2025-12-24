@@ -14,10 +14,10 @@ public class workReport {
     private String title;
     private String content;
     private String filePath;
-    private int reportFile;
-    private int reportType;
+    private Integer reportFile;
+    private Integer reportType;
     private String reportMonth;
-    private int status;
+    private Integer status;
     private Long approveDeptId;
     private LocalDateTime approveTime;
     private LocalDateTime createTime;

@@ -12,11 +12,11 @@ public class Dept {
     @TableId(value = "id", type = IdType.AUTO) // 明确指定主键列名，如果是雪花算法用 ASSIGN_ID
     private Long deptId;
     private Long parentId;
-    private String deptname;
+    private String deptName;
     private Integer deptType;
     private String ancestors;
-    private int sortOrder;
+    private Integer sortOrder;
     private Point regionCenter;
     private Geometry regionShape;
-    private int regionRadius;
+    private Integer regionRadius;
 }

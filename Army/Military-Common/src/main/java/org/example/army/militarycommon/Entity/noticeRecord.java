@@ -13,6 +13,6 @@ public class noticeRecord  {
     @TableField("user_id") // 假设id是复合主键的一部分
     private Long userId;
 
-    private int isRead;
+    private Integer isRead;
     private LocalDateTime readTime;
 }

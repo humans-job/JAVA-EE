@@ -17,7 +17,7 @@ public class leaveReport {
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private LocalDateTime applyTime;
-    private int status;
+    private Integer status;
     private Long approveDept;
     private Long approveOpinion;
     private LocalDateTime reportBcakTime;

@@ -20,7 +20,7 @@ public class militiaInfo  {
     private String address;
     private String politicStstus;
     private Date joinTime;
-    private int auditStatus;
+    private Integer auditStatus;
     private String auditFeedback;
     private Long auditDept;
     private Long createDept;

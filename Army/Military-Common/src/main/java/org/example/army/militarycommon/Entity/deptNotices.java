@@ -15,8 +15,8 @@ public class deptNotices  {
     private Long noticeId;
     private String title;
     private String content;
-    private int type;
+    private Integer type;
     private Long senderId;
     private LocalDateTime sendTime;
-    private int status;
+    private Integer status;
 }
