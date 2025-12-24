@@ -1,4 +1,4 @@
-package edu.config;
+package org.example.army.militarycommon.config;
 
 import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
