@@ -22,7 +22,6 @@
     <modules>
         <module>Military-Common</module>
         <module>Military-Notice</module>
-        <module>Military-Manage</module>
     </modules>
 
     <properties>
