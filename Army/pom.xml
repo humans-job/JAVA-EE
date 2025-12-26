@@ -21,8 +21,8 @@
 
     <modules>
         <module>Military-Common</module>
-        <module>Military-Notice</module>
-        <module>Military-Manage</module>
+        <module>Military-Work-Report</module>
+        <module>Military-Work-Report</module>
     </modules>
 
     <properties>
@@ -55,15 +55,10 @@
             </dependency>
             <dependency>
                 <groupId>org.example</groupId>
-                <artifactId>Military-Manage</artifactId>
+                <artifactId>Military-Work-Report</artifactId>
                 <version>${army.version}</version>
             </dependency>
             <!--<dependency>
-                <groupId>org.example</groupId>
-                <artifactId>army-framework</artifactId>
-                <version>${army.version}</version>
-            </dependency>
-            <dependency>
                 <groupId>org.example</groupId>
                 <artifactId>army-system</artifactId>
                 <version>${army.version}</version>
