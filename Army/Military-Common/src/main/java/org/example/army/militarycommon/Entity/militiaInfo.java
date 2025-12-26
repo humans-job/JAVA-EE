@@ -18,7 +18,7 @@ public class militiaInfo  {
     private String idCard;
     private String phone;
     private String address;
-    private String politicStstus;
+    private String politicStatus;
     private Date joinTime;
     private Integer auditStatus;
     private String auditFeedback;
