@@ -22,6 +22,7 @@
     <modules>
         <module>Military-Common</module>
         <module>Military-Notice</module>
+        <module>Military-Manage</module>
     </modules>
 
     <properties>
@@ -50,6 +51,11 @@
             <dependency>
                 <groupId>org.example</groupId>
                 <artifactId>Military-Notice</artifactId>
+                <version>${army.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.example</groupId>
+                <artifactId>Military-Manage</artifactId>
                 <version>${army.version}</version>
             </dependency>
             <!--<dependency>
