@@ -66,14 +66,14 @@
 
 #### 3. 接口设计
 
-| 请求方式 | 接口路径 | 功能描述     | 核心参数                                                     | 返回示例                                                     |
-| -------- | -------- | ------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| POST     |          | 批量导入档案 | file (文件流)、deptId (团部门 ID)                            | `{code:200, msg:"导入成功，共50条，成功48条", data:{failList:[{idCard:"xxx", reason:"手机号格式错误"}]}}` |
-| POST     |          | 提交师部审核 | ids (民兵 ID 列表)、auditDeptId (师部 ID)                    | `{code:200, msg:"提交成功，待师部审核"}`                     |
-| POST     |          | 师部审核档案 | id、auditStatus (2 = 通过 / 3 = 驳回)、auditFeedback (驳回必填) | `{code:200, msg:"审核完成"}`                                 |
-| GET      |          | 查询档案列表 | deptId、auditStatus、idCard (模糊)、pageNum/pageSize         | `{code:200, msg:"查询成功", data:{list:[...], total:45}}`    |
-| PUT      |          | 编辑档案     | id、idCard、phone、address 等字段                            | `{code:200, msg:"编辑成功", data:{id:1001}}`                 |
-| DELETE   |          | 删除档案     | id                                                           | `{code:200, msg:"删除成功"}`                                 |
+| 请求方式 | 接口路径                                              | 功能描述     | 核心参数                                                     | 返回示例                                                     |
+| -------- | ----------------------------------------------------- | ------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| POST     | http://localhost:8080/api/militia/archive/import      | 批量导入档案 | data（前端处理excel转成的json）                              | `{code:200, msg:"导入成功，共50条，成功48条", data:{failList:[{idCard:"xxx", reason:"手机号格式错误"}]}}` |
+| POST     | http://localhost:8080/api/militia/archive/submit      | 提交师部审核 | ids (民兵 ID 列表)                                           | `{code:200, msg:"提交成功，待师部审核"}`                     |
+| POST     | http://localhost:8080/api/militia/archive/audit       | 师部审核档案 | id、auditStatus (2 = 通过 / 3 = 驳回)、auditFeedback (驳回必填) | `{code:200, msg:"审核完成"}`                                 |
+| GET      | http://localhost:8080/api/militia/archive/list        | 查询档案列表 | auditStatus、idCard (模糊)、pageNum/pageSize                 | `{code:200, msg:"查询成功", data:{list:[...], total:45}}`    |
+| PUT      | http://localhost:8080/api/militia/archive/update      | 编辑档案     | id、idCard、phone、address 等字段                            | `{code:200, msg:"编辑成功", data:{id:1001}}`                 |
+| DELETE   | http://localhost:8080/api/militia/archive/delete/{id} | 删除档案     | id                                                           | `{code:200, msg:"删除成功"}`                                 |
 
 ### 模块三：通知公告与教育
 
