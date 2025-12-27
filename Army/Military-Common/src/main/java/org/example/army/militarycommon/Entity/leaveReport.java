@@ -19,8 +19,8 @@ public class leaveReport {
     private LocalDateTime applyTime;
     private Integer status;
     private Long approveDept;
-    private Long approveOpinion;
+    private String approveOpinion;
     private LocalDateTime reportBcakTime;
     private String reportBcakLocation;
-    private String reportBcakConfirmDept;
+    private Long reportBcakConfirmDept;
 }

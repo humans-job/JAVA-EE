@@ -7,11 +7,14 @@
         <option value="$PROJECT_DIR$/Army/Military-Common/pom.xml" />
         <option value="$PROJECT_DIR$/Army/pom.xml" />
         <option value="$PROJECT_DIR$/Army/Military-Notice/pom.xml" />
-        <option value="$PROJECT_DIR$/Army/Military-Notice/pom.xml" />
+        <option value="$PROJECT_DIR$/Army/Military-Work-Report/pom.xml" />
+        <option value="$PROJECT_DIR$/Army/Military-Manage/pom.xml" />
+        <option value="$PROJECT_DIR$/Army/Military-Leave-Report/pom.xml" />
+        <option value="$PROJECT_DIR$/Army/Military-Map/pom.xml" />
       </list>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_23" default="true" project-jdk-name="openjdk-23" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_17" default="true" project-jdk-name="17" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
 </project>

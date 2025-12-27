@@ -7,10 +7,10 @@
         <artifactId>army</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
-    <artifactId>Military-Work-Report</artifactId>
+    <artifactId>Military-Leave-Report</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>Military Work Report</name>
-    <description>Military Work Report工作汇报模块</description>
+    <name>Military Leave Report</name>
+    <description>Military Leave Report 请销假模块</description>
     <url/>
     <licenses>
         <license/>
@@ -42,7 +42,6 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.36</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -63,25 +62,10 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>17</source>
-                    <target>17</target>
-                    <encoding>UTF-8</encoding>
-                    <annotationProcessorPaths>
-                        <path>
-                            <groupId>org.springframework.boot</groupId>
-                            <artifactId>spring-boot-configuration-processor</artifactId>
-                        </path>
-                        <path>
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok</artifactId>
-                            <version>1.18.36</version>
-                        </path>
-                    </annotationProcessorPaths>
-                </configuration>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
         </plugins>
     </build>
+
 </project>

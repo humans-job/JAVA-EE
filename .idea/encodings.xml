@@ -2,9 +2,15 @@
 <project version="4">
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/Army/Military Common/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Army/Military-Authenticate/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Army/Military-Common/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Army/Military-Common/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Army/Military-Leave-Report/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Army/Military-Manage/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Army/Military-Map/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Army/Military-Notice/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Army/Military-Work-Report/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Army/Military-Work-Report/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Army/MilitaryCommon/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Army/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Army/src/main/resources" charset="UTF-8" />

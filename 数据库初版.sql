@@ -74,7 +74,7 @@ CREATE TABLE biz_work_report (
     report_type TINYINT COMMENT '分类：1=月计划, 2=月总结, 3=专项活动',
     report_month VARCHAR(7) COMMENT '所属月份 (如 2023-10)',
     status      TINYINT DEFAULT 0 COMMENT '0=待审批, 1=已审批/归档, 2=驳回',
-    approve_by  BIGINT COMMENT '审批人ID (团场干部)',
+    approve_dept_id  BIGINT COMMENT '审批人ID (团场干部)',
     approve_time DATETIME,
     create_time DATETIME
 );
