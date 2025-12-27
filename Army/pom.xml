@@ -22,7 +22,8 @@
     <modules>
         <module>Military-Common</module>
         <module>Military-Work-Report</module>
-        <module>Military-Work-Report</module>
+        <module>Military-Notice</module>
+        <module>Military-Manage</module>
     </modules>
 
     <properties>
@@ -56,6 +57,11 @@
             <dependency>
                 <groupId>org.example</groupId>
                 <artifactId>Military-Work-Report</artifactId>
+                <version>${army.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.example</groupId>
+                <artifactId>Military-Manage</artifactId>
                 <version>${army.version}</version>
             </dependency>
             <!--<dependency>
