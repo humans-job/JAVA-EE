@@ -24,6 +24,8 @@
         <module>Military-Work-Report</module>
         <module>Military-Notice</module>
         <module>Military-Manage</module>
+        <module>Military-Map</module>
+        <module>Military-Authenticate</module>
     </modules>
 
     <properties>
@@ -62,6 +64,16 @@
             <dependency>
                 <groupId>org.example</groupId>
                 <artifactId>Military-Manage</artifactId>
+                <version>${army.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.example</groupId>
+                <artifactId>Military-Authenticate</artifactId>
+                <version>${army.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.example</groupId>
+                <artifactId>Military-Map</artifactId>
                 <version>${army.version}</version>
             </dependency>
             <!--<dependency>
