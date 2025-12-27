@@ -1,0 +1,43 @@
+spring:
+  application:
+    name: "Military Authenticate"
+
+  datasource:
+    url: "jdbc:mysql://localhost:3306/xxq?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai"
+    username: "root"
+    password: "jkl123456"
+    driver-class-name: "com.mysql.cj.jdbc.Driver"
+
+mybatis:
+  mapper-locations: "classpath:mappers/*.xml"
+  configuration:
+    map-underscore-to-camel-case: true
+
+server:
+  port: 8080
+#  ssl:
+#    enabled: true
+#    key-store: classpath:server.p12
+#    key-store-type: PKCS12
+#    key-store-password: changeit
+#    key-alias: server
+#
+#    trust-store: classpath:truststore.p12
+#    trust-store-type: PKCS12
+#    trust-store-password: changeit
+#
+#    client-auth: want
+
+pki:
+  ca:
+    keystore-path: ./data/ca.p12
+    keystore-password: ChangeMe_StrongPassword
+    alias: ca
+    subject-dn: "CN=YourSystem Root CA, OU=PKI, O=YourOrg, C=CN"
+    valid-days: 3650
+  user:
+    valid-days: 365
+
+jwt:
+  secret: yanghan250816
+  expire: 604800000

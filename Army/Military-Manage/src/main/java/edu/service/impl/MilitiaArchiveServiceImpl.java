@@ -5,7 +5,9 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import edu.dto.militia.*;
 import edu.service.MilitiaArchiveService;
+import edu.util.Auth0JwtUtil;
 import edu.util.FormatValidateUtil;
+import edu.util.PkiServiceUtil;
 import edu.util.SecurityUtil;
 import edu.vo.militia.MilitiaImportFailItem;
 import edu.vo.militia.MilitiaImportResp;
@@ -34,16 +36,19 @@ public class MilitiaArchiveServiceImpl implements MilitiaArchiveService {
     private final DeptMapper deptMapper;
     private final DeptRelationMapper deptRelationMapper;
     private final UserMapper userMapper;
+    private final PkiServiceUtil pkiServiceUtil;
+    private final SecurityUtil securityUtil;
+    private final Auth0JwtUtil auth0JwtUtil;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public MilitiaImportResp batchImport(MilitiaBatchImportReq req) {
-        Long currentDeptId = SecurityUtil.getDeptId();
+        Long currentDeptId = securityUtil.getDeptId();
 
         // 团账号：只能往自己团里导入
         Dept currentDept = deptMapper.selectById(currentDeptId);
         if (currentDept != null && Integer.valueOf(3).equals(currentDept.getDeptType())) {
-            if (!Objects.equals(currentDeptId, SecurityUtil.getDeptId())) {
+            if (!Objects.equals(currentDeptId, securityUtil.getDeptId())) {
                 throw new IllegalArgumentException("无权限：只能导入本团数据");
             }
         }
@@ -87,7 +92,7 @@ public class MilitiaArchiveServiceImpl implements MilitiaArchiveService {
         Set<String> existed = new HashSet<>();
         if (!idCards.isEmpty()) {
             List<militiaInfo> existRows = militiaInfoMapper.selectList(new LambdaQueryWrapper<militiaInfo>()
-                    .eq(militiaInfo::getCreateDept, SecurityUtil.getDeptId())
+                    .eq(militiaInfo::getCreateDept, securityUtil.getDeptId())
                     .in(militiaInfo::getIdCard, idCards));
             existed = existRows.stream().map(militiaInfo::getIdCard).collect(Collectors.toSet());
         }
@@ -101,8 +106,8 @@ public class MilitiaArchiveServiceImpl implements MilitiaArchiveService {
             }
 
             militiaInfo mi = new militiaInfo();
-            mi.setDeptId(SecurityUtil.getDeptId());
-            mi.setCreateDept(SecurityUtil.getDeptId());
+            mi.setDeptId(securityUtil.getDeptId());
+            mi.setCreateDept(securityUtil.getDeptId());
             mi.setName(r.getName() == null ? null : r.getName().trim());
             mi.setIdCard(idCard);
             mi.setPhone(r.getPhone() == null ? null : r.getPhone().trim());
@@ -127,7 +132,7 @@ public class MilitiaArchiveServiceImpl implements MilitiaArchiveService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void submitToDivision(MilitiaSubmitAuditReq req) {
-        Long currentDeptId = SecurityUtil.getDeptId();
+        Long currentDeptId = securityUtil.getDeptId();
         Dept currentDept = deptMapper.selectById(currentDeptId);
         if (currentDept != null && !Integer.valueOf(3).equals(currentDept.getDeptType())) {
             // 只允许团提交
@@ -163,7 +168,7 @@ public class MilitiaArchiveServiceImpl implements MilitiaArchiveService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void divisionAudit(MilitiaAuditReq req) {
-        Long currentDeptId = SecurityUtil.getDeptId();
+        Long currentDeptId = securityUtil.getDeptId();
         Dept currentDept = deptMapper.selectById(currentDeptId);
         if (currentDept != null && !Integer.valueOf(2).equals(currentDept.getDeptType())) {
             throw new IllegalArgumentException("仅师机关可审核");
@@ -186,6 +191,7 @@ public class MilitiaArchiveServiceImpl implements MilitiaArchiveService {
             user.setUsername(mi.getIdCard());
             user.setUserType(1);
             userMapper.insert(user);
+            pkiServiceUtil.issueCertForUser(user.getUserId());
             Long userId = user.getUserId();
             mi.setUserId(userId);
             mi.setAuditStatus(2);
@@ -205,7 +211,7 @@ public class MilitiaArchiveServiceImpl implements MilitiaArchiveService {
 
     @Override
     public MilitiaListResp list(Long deptId, Integer auditStatus, String idCardLike, long pageNum, long pageSize) {
-        Long currentDeptId = SecurityUtil.getDeptId();
+        Long currentDeptId = securityUtil.getDeptId();
         Dept currentDept = deptMapper.selectById(currentDeptId);
         Integer currentType = currentDept == null ? null : currentDept.getDeptType();
 
@@ -264,7 +270,7 @@ public class MilitiaArchiveServiceImpl implements MilitiaArchiveService {
             throw new IllegalArgumentException("id不能为空");
         }
 
-        Long currentDeptId = SecurityUtil.getDeptId();
+        Long currentDeptId = securityUtil.getDeptId();
         Dept currentDept = deptMapper.selectById(currentDeptId);
         Integer currentType = currentDept == null ? null : currentDept.getDeptType();
 
@@ -319,7 +325,7 @@ public class MilitiaArchiveServiceImpl implements MilitiaArchiveService {
             throw new IllegalArgumentException("id不能为空");
         }
 
-        Long currentDeptId = SecurityUtil.getDeptId();
+        Long currentDeptId = securityUtil.getDeptId();
         Dept currentDept = deptMapper.selectById(currentDeptId);
         Integer currentType = currentDept == null ? null : currentDept.getDeptType();
 

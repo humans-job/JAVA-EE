@@ -6,6 +6,7 @@ import edu.dto.LoginReq;
 import edu.dto.LoginResp;
 import edu.service.LoginService;
 import edu.session.RedisSessionStore;
+import edu.util.Auth0JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.example.army.militarycommon.Entity.User;
 import org.example.army.militarycommon.mapper.UserMapper;
@@ -13,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -20,6 +23,7 @@ public class LoginServiceImpl implements LoginService {
     private final UserMapper userMapper;
     private final RedisSessionStore sessionStore;
     private final ObjectMapper objectMapper;
+    private final Auth0JwtUtil auth0JwtUtil;
 
     @Override
     public LoginResp login(LoginReq req) {
@@ -61,7 +65,9 @@ public class LoginServiceImpl implements LoginService {
 
         // 组装返回
         LoginResp resp = new LoginResp();
-        resp.setUserId(user.getUserId());
+        Map<String, Long> claims = new HashMap<>();
+        claims.put("userId", user.getUserId());
+        resp.setToken(auth0JwtUtil.generateToken(claims));
         resp.setUsername(user.getUsername());
         resp.setUserType(user.getUserType());
         return resp;

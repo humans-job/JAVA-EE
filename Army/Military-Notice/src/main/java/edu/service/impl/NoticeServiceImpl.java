@@ -4,7 +4,6 @@ package edu.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import edu.dto.NoticeMyListReq;
 import edu.dto.NoticePublishReq;
 import edu.service.NoticeService;
@@ -33,11 +32,12 @@ public class NoticeServiceImpl implements NoticeService {
     private final NoticeRecordMapper noticeRecordMapper;
     private final DeptRelationMapper deptRelationMapper;
     private final DeptMapper deptMapper;
+    private final SecurityUtil securityUtil;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Long publish(NoticePublishReq req) {
-        Long senderDeptId = SecurityUtil.getDeptId();
+        Long senderDeptId = securityUtil.getDeptId();
 
         deptNotices notice = new deptNotices();
         notice.setTitle(req.getTitle());
@@ -85,7 +85,7 @@ public class NoticeServiceImpl implements NoticeService {
 
     @Override
     public IPage<NoticeMyListItem> myList(NoticeMyListReq req) {
-        Long deptId = SecurityUtil.getDeptId();
+        Long deptId = securityUtil.getDeptId();
 
         LambdaQueryWrapper<noticeRecord> rw = new LambdaQueryWrapper<noticeRecord>()
                 .eq(noticeRecord::getUserId, deptId);
@@ -145,7 +145,7 @@ public class NoticeServiceImpl implements NoticeService {
 
     @Override
     public void markRead(Long noticeId) {
-        Long deptId = SecurityUtil.getDeptId();
+        Long deptId = securityUtil.getDeptId();
 
         noticeRecord record = noticeRecordMapper.selectOne(new LambdaQueryWrapper<noticeRecord>()
                 .eq(noticeRecord::getNoticeId, noticeId)

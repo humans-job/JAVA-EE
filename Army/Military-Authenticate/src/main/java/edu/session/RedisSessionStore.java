@@ -15,7 +15,7 @@ public class RedisSessionStore {
     }
 
     public void save(Long userId,String json) {
-        redis.opsForValue().set(String.valueOf(userId),json,Duration.ofHours(2));
+        redis.opsForValue().set(String.valueOf(userId),json,Duration.ofHours(168));
     }
 
     public String get(Long userId) {
