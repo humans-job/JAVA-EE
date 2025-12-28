@@ -9,7 +9,7 @@ import lombok.Data;
 @Data
 @TableName("sys_dept")
 public class Dept {
-    @TableId(value = "id", type = IdType.AUTO) // 明确指定主键列名，如果是雪花算法用 ASSIGN_ID
+    @TableId(value = "dept_id", type = IdType.AUTO) // 明确指定主键列名，如果是雪花算法用 ASSIGN_ID
     private Long deptId;
     private Long parentId;
     private String deptName;

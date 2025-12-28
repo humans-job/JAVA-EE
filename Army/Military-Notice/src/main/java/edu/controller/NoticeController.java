@@ -47,12 +47,6 @@ public class NoticeController {
         return ApiResp.ok(noticeService.feedback(noticeId, readStatus, pageNum, pageSize));
     }
 
-    @PutMapping("/{noticeId}/complete")
-    public ApiResp<Void> complete(@PathVariable Long noticeId) {
-        noticeService.complete(noticeId);
-        return ApiResp.ok(null);
-    }
-
     @Data
     public static class ApiResp<T> {
         private int code;
