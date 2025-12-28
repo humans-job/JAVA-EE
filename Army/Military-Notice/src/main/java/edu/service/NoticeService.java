@@ -6,6 +6,7 @@ import edu.dto.NoticeMyListReq;
 import edu.dto.NoticePublishReq;
 import edu.vo.NoticeFeedbackVO;
 import edu.vo.NoticeMyListItem;
+import org.example.army.militarycommon.Entity.deptNotices;
 
 import java.util.List;
 
@@ -20,4 +21,6 @@ public interface NoticeService {
 
 
     void complete(Long noticeId);
+
+    IPage<deptNotices> sentList(NoticeMyListReq req);
 }

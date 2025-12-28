@@ -4,6 +4,8 @@ import edu.common.ApiResp;
 import edu.dto.LoginReq;
 import edu.dto.LoginResp;
 import edu.service.LoginService;
+import edu.util.IpUtil;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,8 +24,10 @@ public class AuthenticateController {
      * 多因子登录接口
      */
     @PostMapping("/login")
-    public ApiResp<LoginResp> login(@RequestBody @Valid LoginReq req) {
+    public ApiResp<LoginResp> login(@RequestBody @Valid LoginReq req, HttpServletRequest request) {
         try{
+            String ip = IpUtil.getClientIp(request);
+            req.setLoginIp(ip);
             LoginResp response = loginService.login(req);
             return ApiResp.ok("登录成功", response);
         }catch (Exception e){

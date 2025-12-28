@@ -241,4 +241,19 @@ public class NoticeServiceImpl implements NoticeService {
         deptNoticesMapper.updateById(n);
     }
 
+    @Override
+    public IPage<deptNotices> sentList(NoticeMyListReq req) {
+        Long deptId = securityUtil.getDeptId(); // 发布者单位id（senderId）
+
+        LambdaQueryWrapper<deptNotices> qw = new LambdaQueryWrapper<deptNotices>()
+                .eq(deptNotices::getSenderId, deptId)
+                .eq(req.getNoticeType() != null, deptNotices::getType, req.getNoticeType())
+                .eq(req.getReadStatus() != null, deptNotices::getStatus, req.getReadStatus())
+                .orderByDesc(deptNotices::getSendTime);
+
+        Page<deptNotices> page = new Page<>(req.getPageNum(), req.getPageSize());
+        return deptNoticesMapper.selectPage(page, qw);
+    }
+
+
 }
