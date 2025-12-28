@@ -19,11 +19,6 @@
       </div>
     </template>
 
-    <!-- ✅ 只做提示，不给切换 -->
-    <el-tag class="mode-tag" effect="plain" type="info">
-      {{ activeTab === 'sent' ? '我发布的通知（师机关）' : '我收到的通知（团机关）' }}
-    </el-tag>
-
     <el-form :inline="true" :model="query" class="filters">
       <el-form-item label="类型">
         <el-select v-model="query.noticeType" clearable placeholder="全部" style="width: 160px">
