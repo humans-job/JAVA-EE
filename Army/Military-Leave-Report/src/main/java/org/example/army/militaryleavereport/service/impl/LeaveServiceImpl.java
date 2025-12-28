@@ -72,9 +72,9 @@ public class LeaveServiceImpl extends ServiceImpl<LeaveReportMapper, leaveReport
         leave.setApproveOpinion(null);
 
         // 销假相关 (时间、位置、确认部门) - 保持与实体类拼写一致 (Bcak)
-        leave.setReportBcakTime(null);
-        leave.setReportBcakLocation(null);
-        leave.setReportBcakConfirmDept(null);
+        leave.setReportBackTime(null);
+        leave.setReportBackLocation(null);
+        leave.setReportBackConfirmDept(null);
 
         this.save(leave);
     }
@@ -115,8 +115,8 @@ public class LeaveServiceImpl extends ServiceImpl<LeaveReportMapper, leaveReport
 
         // 记录销假时间和位置
         // 注意：使用实体类中原有的拼写 (Bcak -> Back)
-        leave.setReportBcakTime(LocalDateTime.now());
-        leave.setReportBcakLocation(dto.getReportBackLocation());
+        leave.setReportBackTime(LocalDateTime.now());
+        leave.setReportBackLocation(dto.getReportBackLocation());
 
         // 状态逻辑：
         // 方案A：销假后直接变归档 (status=3)
@@ -142,7 +142,7 @@ public class LeaveServiceImpl extends ServiceImpl<LeaveReportMapper, leaveReport
         // 记录确认人
         // 实体类 reportBcakConfirmDept 是 String，DTO confirmBy 是 Long，做转换
         if (dto.getConfirmBy() != null) {
-            leave.setReportBcakConfirmDept(dto.getConfirmBy());
+            leave.setReportBackConfirmDept(dto.getConfirmBy());
         }
 
         this.updateById(leave);

@@ -20,7 +20,7 @@ public class leaveReport {
     private Integer status;
     private Long approveDept;
     private String approveOpinion;
-    private LocalDateTime reportBcakTime;
-    private String reportBcakLocation;
-    private Long reportBcakConfirmDept;
+    private LocalDateTime reportBackTime;
+    private String reportBackLocation;
+    private Long reportBackConfirmDept;
 }

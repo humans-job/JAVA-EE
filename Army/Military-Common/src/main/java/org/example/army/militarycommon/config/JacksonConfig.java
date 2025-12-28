@@ -1,18 +1,27 @@
 package org.example.army.militarycommon.config;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.n52.jackson.datatype.jts.JtsModule;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 
 @Configuration
 public class JacksonConfig {
 
-    /**
-     * 注册 JtsModule，使 Jackson 能够识别 JTS 的 Geometry 对象，
-     * 并将其序列化为标准的 GeoJSON 格式供前端地图（Leaflet/OpenLayers）直接使用。
-     */
     @Bean
-    public JtsModule jtsModule() {
-        return new JtsModule();
+    @Primary // 关键：标记为主配置，强制覆盖 Spring Boot 默认的 ObjectMapper
+    public ObjectMapper objectMapper() {
+        ObjectMapper mapper = new ObjectMapper();
+
+        // 1. 注册 JTS 模块 (解决 Point 无法反序列化的问题)
+        mapper.registerModule(new JtsModule());
+
+        // 2. (可选) 配置忽略 JSON 中存在但 Java 对象中不存在的字段，防止报错
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+        return mapper;
     }
 }
+
