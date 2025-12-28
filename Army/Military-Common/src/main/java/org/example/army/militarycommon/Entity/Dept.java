@@ -15,7 +15,6 @@ public class Dept {
     private Long deptId;
     private Long parentId;
     private String deptName;
-    private Long parentId;
     private Integer deptType;
     private String shapeType;
     @TableField(value = "region_shape", typeHandler = MysqlGeometryTypeHandler.class)
