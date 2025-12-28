@@ -5,24 +5,25 @@
         <div>
           <div class="h1">通知教育</div>
           <div class="sub">
-            团机关：仅查看收到的通知并标记已读；
-            师机关：可发布通知，并查看“我发布的通知”和阅读反馈。
+            {{ activeTab === 'sent'
+              ? '仅查看本单位已发布的通知；可查看阅读反馈。'
+              : '查看我收到的通知；可标记已读。' }}
           </div>
         </div>
+
         <div class="actions">
+          <!-- ✅ 师机关才能发布 -->
           <el-button v-if="canPublish" type="primary" @click="openPublish">发布通知</el-button>
           <el-button @click="load(1)">刷新</el-button>
         </div>
       </div>
     </template>
 
-    <!-- ✅ Tab：只有师机关才能看到“我发布的” -->
-    <el-tabs v-model="activeTab" @tab-change="onTabChange">
-      <el-tab-pane name="my" label="我收到的" />
-      <el-tab-pane v-if="canViewSent" name="sent" label="我发布的" />
-    </el-tabs>
+    <!-- ✅ 只做提示，不给切换 -->
+    <el-tag class="mode-tag" effect="plain" type="info">
+      {{ activeTab === 'sent' ? '我发布的通知（师机关）' : '我收到的通知（团机关）' }}
+    </el-tag>
 
-    <!-- ✅ 筛选：根据 Tab 显示不同筛选项 -->
     <el-form :inline="true" :model="query" class="filters">
       <el-form-item label="类型">
         <el-select v-model="query.noticeType" clearable placeholder="全部" style="width: 160px">
@@ -31,19 +32,19 @@
         </el-select>
       </el-form-item>
 
-      <!-- 我收到的：阅读状态 -->
-      <el-form-item v-if="activeTab === 'my'" label="阅读状态">
+      <el-form-item label="状态">
         <el-select v-model="query.readStatus" clearable placeholder="全部" style="width: 160px">
-          <el-option :value="0" label="未读" />
-          <el-option :value="1" label="已读" />
-        </el-select>
-      </el-form-item>
+          <!-- ✅ 团机关：readStatus=是否已读 -->
+          <template v-if="activeTab === 'my'">
+            <el-option :value="0" label="未读" />
+            <el-option :value="1" label="已读" />
+          </template>
 
-      <!-- 我发布的：完成状态（status） -->
-      <el-form-item v-if="activeTab === 'sent'" label="完成状态">
-        <el-select v-model="query.status" clearable placeholder="全部" style="width: 160px">
-          <el-option :value="0" label="未完成" />
-          <el-option :value="1" label="已完成" />
+          <!-- ✅ 师机关：readStatus 在 sentList 中实际被当作 status（完成/未完成） -->
+          <template v-else>
+            <el-option :value="0" label="未完成" />
+            <el-option :value="1" label="已完成" />
+          </template>
         </el-select>
       </el-form-item>
 
@@ -53,9 +54,9 @@
       </el-form-item>
     </el-form>
 
-    <!-- ✅ 表格：两种 Tab 显示不同列 -->
     <el-table :data="rows" border row-key="noticeId" v-loading="loading">
       <el-table-column prop="title" label="标题" min-width="220" show-overflow-tooltip />
+
       <el-table-column prop="noticeType" label="类型" width="120">
         <template #default="{ row }">
           <el-tag effect="plain">{{ typeText(row.noticeType) }}</el-tag>
@@ -68,19 +69,12 @@
         </template>
       </el-table-column>
 
-      <!-- 我发布的：完成状态 -->
-      <el-table-column v-if="activeTab === 'sent'" prop="status" label="完成状态" width="120">
-        <template #default="{ row }">
-          <el-tag :type="row.status === 1 ? 'success' : 'info'">
-            {{ row.status === 1 ? '已完成' : '未完成' }}
-          </el-tag>
-        </template>
-      </el-table-column>
-
-      <!-- 我收到的：阅读状态 + 阅读时间 -->
+      <!-- ✅ 团机关：阅读状态 -->
       <el-table-column v-if="activeTab === 'my'" prop="isRead" label="阅读" width="110">
         <template #default="{ row }">
-          <el-tag :type="row.isRead ? 'success' : 'warning'">{{ row.isRead ? '已读' : '未读' }}</el-tag>
+          <el-tag :type="row.isRead ? 'success' : 'warning'">
+            {{ row.isRead ? '已读' : '未读' }}
+          </el-tag>
         </template>
       </el-table-column>
 
@@ -90,11 +84,20 @@
         </template>
       </el-table-column>
 
-      <el-table-column fixed="right" label="操作" width="240">
+      <!-- ✅ 师机关：完成状态（来自 deptNotices.status） -->
+      <el-table-column v-if="activeTab === 'sent'" prop="status" label="完成状态" width="110">
+        <template #default="{ row }">
+          <el-tag :type="row.status === 1 ? 'success' : 'warning'">
+            {{ row.status === 1 ? '已完成' : '未完成' }}
+          </el-tag>
+        </template>
+      </el-table-column>
+
+      <el-table-column fixed="right" label="操作" width="260">
         <template #default="{ row }">
           <el-button link type="primary" @click="openDetail(row)">详情</el-button>
 
-          <!-- 我收到的：标记已读 -->
+          <!-- ✅ 只有团机关（收到的通知）才允许标记已读 -->
           <el-button
               v-if="activeTab === 'my' && !row.isRead"
               link
@@ -105,13 +108,8 @@
             标记已读
           </el-button>
 
-          <!-- 我发布的：阅读反馈（只有师机关可见） -->
-          <el-button
-              v-if="activeTab === 'sent' && canFeedback"
-              link
-              type="warning"
-              @click="openFeedback(row.noticeId)"
-          >
+          <!-- ✅ 只有师机关（已发布）才允许查看反馈 -->
+          <el-button v-if="activeTab === 'sent' && canFeedback" link type="warning" @click="openFeedback(row.noticeId)">
             阅读反馈
           </el-button>
         </template>
@@ -131,8 +129,8 @@
     </div>
   </el-card>
 
-  <!-- 详情（后端暂无按 noticeId 获取 content 的接口，这里仅展示标题/基本信息） -->
-  <el-dialog v-model="detailVisible" title="通知详情" width="560px">
+  <!-- ✅ 详情：展示正文 content -->
+  <el-dialog v-model="detailVisible" title="通知详情" width="720px">
     <el-descriptions v-if="detailRow" :column="1" border>
       <el-descriptions-item label="标题">{{ detailRow.title }}</el-descriptions-item>
       <el-descriptions-item label="类型">{{ typeText(detailRow.noticeType) }}</el-descriptions-item>
@@ -142,36 +140,36 @@
         {{ detailRow.isRead ? '已读' : '未读' }}
       </el-descriptions-item>
 
-      <el-descriptions-item v-if="activeTab === 'sent'" label="完成状态">
+      <el-descriptions-item v-else label="完成状态">
         {{ detailRow.status === 1 ? '已完成' : '未完成' }}
+      </el-descriptions-item>
+
+      <el-descriptions-item label="正文">
+        <div class="content">
+          {{ detailRow.content || '（无正文）' }}
+        </div>
       </el-descriptions-item>
     </el-descriptions>
 
-    <el-alert
-        style="margin-top: 12px"
-        type="info"
-        :closable="false"
-        show-icon
-        title="提示：后端当前未提供“按 noticeId 查询 content”的接口，所以前端暂不展示正文。你后续补接口后，把这里换成请求即可。"
-    />
     <template #footer>
       <el-button @click="detailVisible = false">关闭</el-button>
     </template>
   </el-dialog>
 
-  <!-- 发布（仅师机关可见按钮触发） -->
+  <!-- ✅ 师机关发布 -->
   <el-dialog v-model="publishVisible" title="发布通知" width="640px">
     <el-form :model="publishForm" label-width="90px">
       <el-form-item label="标题" required>
         <el-input v-model.trim="publishForm.title" placeholder="请输入标题" />
       </el-form-item>
+
       <el-form-item label="类型" required>
         <el-radio-group v-model="publishForm.noticeType">
           <el-radio :value="1">通知公告</el-radio>
           <el-radio :value="2">教育学习</el-radio>
-          <el-radio :value="3">团场内部通知</el-radio>
         </el-radio-group>
       </el-form-item>
+
       <el-form-item label="内容" required>
         <el-input
             v-model="publishForm.content"
@@ -183,12 +181,12 @@
     </el-form>
 
     <template #footer>
-      <el-button @click="publishVisible=false">取消</el-button>
+      <el-button @click="publishVisible = false">取消</el-button>
       <el-button type="primary" :loading="publishing" @click="submitPublish">发布</el-button>
     </template>
   </el-dialog>
 
-  <!-- 阅读反馈（仅师机关在“我发布的”里点开） -->
+  <!-- 阅读反馈（师机关） -->
   <el-dialog v-model="feedbackVisible" title="阅读反馈" width="720px">
     <div class="fb-top" v-if="feedback">
       <el-statistic title="总数" :value="feedback.total" />
@@ -237,13 +235,13 @@
     </div>
 
     <template #footer>
-      <el-button @click="feedbackVisible=false">关闭</el-button>
+      <el-button @click="feedbackVisible = false">关闭</el-button>
     </template>
   </el-dialog>
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, reactive, ref, watch } from 'vue'
+import { computed, onMounted, reactive, ref } from 'vue'
 import dayjs from 'dayjs'
 import { ElMessage } from 'element-plus'
 import { useAuthStore } from '@/stores/auth'
@@ -252,7 +250,7 @@ import {
   apiNoticeRead,
   apiNoticeMyList,
   apiNoticePublish,
-  apiNoticeSentList,
+  apiNoticeSentList, // ✅ 需要你在 api/notice.ts 里补
   type NoticeFeedback,
   type NoticeMyListItem
 } from '@/api/notice'
@@ -260,43 +258,24 @@ import {
 const auth = useAuthStore()
 auth.initFromStorage()
 
-// ✅ 只有师机关 userType=4
-const isTeacher = computed(() => auth.userType === 4)
-const canPublish = isTeacher
-const canFeedback = isTeacher
-const canViewSent = isTeacher
+// ✅ 团=3，师=4
+const isTuan = computed(() => auth.userType === 3)
+const isShi = computed(() => auth.userType === 4)
 
-// ✅ Tab：默认我收到的
+// ✅ 师机关只能看已发布；团机关只能看已收到
 const activeTab = ref<'my' | 'sent'>('my')
 
-// ✅ 防止篡改 tab 绕过
-watch(
-    () => auth.userType,
-    () => {
-      if (!canViewSent.value && activeTab.value === 'sent') activeTab.value = 'my'
-    },
-    { immediate: true }
-)
-
-function onTabChange() {
-  if (!canViewSent.value && activeTab.value === 'sent') {
-    activeTab.value = 'my'
-    ElMessage.warning('无权限查看“我发布的通知”')
-    return
-  }
-  reset()
-}
+// ✅ 权限：师机关发布/反馈；团机关标记已读
+const canPublish = computed(() => isShi.value)
+const canFeedback = computed(() => isShi.value)
 
 const loading = ref(false)
-const rows = ref<any[]>([])
+const rows = ref<NoticeMyListItem[]>([])
 const total = ref(0)
 
 const query = reactive({
   noticeType: undefined as number | undefined,
-  // my 专用
   readStatus: undefined as number | undefined,
-  // sent 专用
-  status: undefined as number | undefined,
   pageNum: 1,
   pageSize: 10
 })
@@ -306,48 +285,28 @@ function fmt(v?: string) {
   return dayjs(v).format('YYYY-MM-DD HH:mm')
 }
 function typeText(t: number) {
-  return t === 1 ? '通知公告' : t === 2 ? '教育学习' : t === 3 ? '团场内部' : `类型${t}`
+  return t === 1 ? '通知公告' : t === 2 ? '教育学习' : `类型${t}`
 }
 
 async function load(page?: number) {
   if (page) query.pageNum = page
   loading.value = true
   try {
-    if (activeTab.value === 'sent') {
-      // ✅ 兜底：团机关强制回 my
-      if (!canViewSent.value) {
-        activeTab.value = 'my'
-        ElMessage.warning('无权限查看“我发布的通知”')
-        return
-      }
+    const r =
+        activeTab.value === 'my'
+            ? await apiNoticeMyList({
+              noticeType: query.noticeType,
+              readStatus: query.readStatus,
+              pageNum: query.pageNum,
+              pageSize: query.pageSize
+            })
+            : await apiNoticeSentList({
+              noticeType: query.noticeType,
+              readStatus: query.readStatus, // sentList 里代表 status（完成/未完成）
+              pageNum: query.pageNum,
+              pageSize: query.pageSize
+            })
 
-      const r = await apiNoticeSentList({
-        noticeType: query.noticeType,
-        readStatus: query.status,
-        pageNum: query.pageNum,
-        pageSize: query.pageSize
-      })
-
-      const pageData = r.data.data
-      // sent 接口返回 deptNotices IPage：records 里字段一般是 noticeId/title/type/status/sendTime/senderId...
-      rows.value = (pageData?.records || []).map((n: any) => ({
-        noticeId: n.noticeId,
-        title: n.title,
-        noticeType: n.type,
-        status: n.status,
-        createTime: n.sendTime
-      }))
-      total.value = Number(pageData?.total || 0)
-      return
-    }
-
-    // ✅ 我收到的
-    const r = await apiNoticeMyList({
-      noticeType: query.noticeType,
-      readStatus: query.readStatus,
-      pageNum: query.pageNum,
-      pageSize: query.pageSize
-    })
     const pageData = r.data.data
     rows.value = pageData?.records || []
     total.value = Number(pageData?.total || 0)
@@ -361,8 +320,6 @@ async function load(page?: number) {
 function reset() {
   query.noticeType = undefined
   query.readStatus = undefined
-  query.status = undefined
-  query.pageNum = 1
   load(1)
 }
 
@@ -380,12 +337,20 @@ async function markRead(id: number) {
   }
 }
 
-/** 详情 */
+/** 详情：展示正文；只有团机关在“收到的通知”里自动标记已读 */
 const detailVisible = ref(false)
-const detailRow = ref<any | null>(null)
-function openDetail(row: NoticeMyListItem | any) {
+const detailRow = ref<NoticeMyListItem | null>(null)
+async function openDetail(row: NoticeMyListItem) {
   detailRow.value = row
   detailVisible.value = true
+
+  if (activeTab.value === 'my' && !row.isRead) {
+    try {
+      await apiNoticeRead(row.noticeId)
+      row.isRead = 1
+      row.readTime = new Date().toISOString()
+    } catch {}
+  }
 }
 
 /** 发布 */
@@ -398,7 +363,6 @@ const publishForm = reactive({
 })
 
 function openPublish() {
-  if (!canPublish.value) return ElMessage.warning('无权限发布通知')
   publishForm.title = ''
   publishForm.content = ''
   publishForm.noticeType = 1
@@ -406,29 +370,17 @@ function openPublish() {
 }
 
 async function submitPublish() {
-  if (!canPublish.value) return ElMessage.warning('无权限发布通知')
   if (!publishForm.title.trim()) return ElMessage.warning('标题必填')
   if (!publishForm.content.trim()) return ElMessage.warning('内容必填')
-
   publishing.value = true
   try {
-    const r = await apiNoticePublish({
+    await apiNoticePublish({
       title: publishForm.title,
       content: publishForm.content,
       noticeType: publishForm.noticeType
     })
-
-    // 后端 publish 可能返回 -1（无下级单位）
-    if (r.data.data === -1) {
-      ElMessage.error('发布失败：当前单位无下级单位（未生成接收记录）')
-      return
-    }
-
     ElMessage.success('发布成功')
     publishVisible.value = false
-
-    // ✅ 发布后切到“我发布的”并刷新（只有师机关才存在 sent tab）
-    activeTab.value = 'sent'
     await load(1)
   } catch (e: any) {
     ElMessage.error(e?.message || '发布失败')
@@ -450,7 +402,6 @@ const fbQuery = reactive({
 })
 
 function openFeedback(noticeId: number) {
-  if (!canFeedback.value || activeTab.value !== 'sent') return ElMessage.warning('无权限查看反馈')
   fbQuery.noticeId = noticeId
   fbQuery.readStatus = undefined
   fbQuery.pageNum = 1
@@ -478,25 +429,59 @@ async function loadFeedback(page?: number) {
   }
 }
 
-onMounted(() => load(1))
+onMounted(() => {
+  // ✅ 强制视图：师只能 sent；团只能 my
+  if (isShi.value) activeTab.value = 'sent'
+  else if (isTuan.value) activeTab.value = 'my'
+  else activeTab.value = 'my'
+
+  load(1)
+})
 </script>
 
 <style scoped>
-.card { border-radius: 16px; }
+.card {
+  border-radius: 16px;
+}
 .head {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 16px;
 }
-.h1 { font-size: 20px; font-weight: 800; }
-.sub { color: var(--el-text-color-secondary); margin-top: 4px; font-size: 13px; }
-.actions { display: flex; gap: 10px; }
-.filters { margin-bottom: 10px; }
-.pager { margin-top: 14px; display:flex; justify-content:flex-end; }
+.h1 {
+  font-size: 20px;
+  font-weight: 800;
+}
+.sub {
+  color: var(--el-text-color-secondary);
+  margin-top: 4px;
+  font-size: 13px;
+}
+.actions {
+  display: flex;
+  gap: 10px;
+}
+.mode-tag {
+  margin-bottom: 10px;
+}
+.filters {
+  margin-bottom: 10px;
+}
+.pager {
+  margin-top: 14px;
+  display: flex;
+  justify-content: flex-end;
+}
 .fb-top {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 12px;
+}
+.content {
+  white-space: pre-wrap;
+  word-break: break-word;
+  line-height: 1.75;
+  padding: 6px 0;
 }
 </style>
