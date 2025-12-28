@@ -17,6 +17,7 @@ export type NoticeMyListItem = {
   senderDeptId: number
   isRead: number
   readTime?: string | null
+  content?: string
 }
 
 export type NoticeFeedback = {
