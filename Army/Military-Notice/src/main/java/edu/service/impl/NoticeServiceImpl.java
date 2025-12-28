@@ -133,6 +133,7 @@ public class NoticeServiceImpl implements NoticeService {
             item.setSenderDeptId(n.getSenderId());
             item.setIsRead(r.getIsRead());
             item.setReadTime(r.getReadTime());
+            item.setContent(n.getContent());
             items.add(item);
         }
 
@@ -240,5 +241,36 @@ public class NoticeServiceImpl implements NoticeService {
         n.setStatus(1);
         deptNoticesMapper.updateById(n);
     }
+
+    @Override
+    public IPage<NoticeMyListItem> sentList(NoticeMyListReq req) {
+        Long deptId = securityUtil.getDeptId();
+        Page<deptNotices> page = new Page<>(req.getPageNum(), req.getPageSize());
+
+        IPage<deptNotices> p = deptNoticesMapper.selectPage(page,
+                new LambdaQueryWrapper<deptNotices>()
+                        .eq(deptNotices::getSenderId, deptId)
+                        .eq(req.getNoticeType()!=null, deptNotices::getType, req.getNoticeType())
+                        .eq(req.getReadStatus()!=null, deptNotices::getStatus, req.getReadStatus())
+                        .orderByDesc(deptNotices::getSendTime));
+
+        // 转成 NoticeMyListItem（字段统一：noticeType/createTime/senderDeptId）
+        Page<NoticeMyListItem> out = new Page<>(p.getCurrent(), p.getSize());
+        out.setTotal(p.getTotal());
+        out.setRecords(p.getRecords().stream().map(n -> {
+            NoticeMyListItem item = new NoticeMyListItem();
+            item.setNoticeId(n.getNoticeId());
+            item.setTitle(n.getTitle());
+            item.setContent(n.getContent());
+            item.setNoticeType(n.getType());
+            item.setStatus(n.getStatus());
+            item.setCreateTime(n.getSendTime());
+            item.setSenderDeptId(n.getSenderId());
+            return item;
+        }).toList());
+
+        return out;
+    }
+
 
 }

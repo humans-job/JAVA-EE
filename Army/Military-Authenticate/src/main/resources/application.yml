@@ -1,11 +1,11 @@
 spring:
   application:
-    name: "Military Authenticate"
+    name: demo
 
   datasource:
-    url: "jdbc:mysql://localhost:3306/xxq?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai"
-    username: "root"
-    password: "jkl123456"
+    url: "jdbc:mysql://rm-2zezq0halh791d97sfo.mysql.rds.aliyuncs.com/java_demo?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai"
+    username: "yh"
+    password: "jkl123456*"
     driver-class-name: "com.mysql.cj.jdbc.Driver"
 
 mybatis:

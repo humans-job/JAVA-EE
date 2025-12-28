@@ -2,6 +2,7 @@
 package edu.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import edu.common.ApiResp;
 import edu.dto.NoticeMyListReq;
 import edu.dto.NoticePublishReq;
 import edu.service.NoticeService;
@@ -10,6 +11,7 @@ import edu.vo.NoticeMyListItem;
 import jakarta.validation.Valid;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.example.army.militarycommon.Entity.deptNotices;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,7 +30,11 @@ public class NoticeController {
 
     @GetMapping("/my")
     public ApiResp<IPage<NoticeMyListItem>> myList(NoticeMyListReq req) {
-        return ApiResp.ok(noticeService.myList(req));
+        try {
+            return ApiResp.ok(noticeService.myList(req));
+        } catch (Exception e) {
+            return ApiResp.fail(e.getMessage());
+        }
     }
 
     @PutMapping("/{noticeId}/read")
@@ -47,26 +53,10 @@ public class NoticeController {
         return ApiResp.ok(noticeService.feedback(noticeId, readStatus, pageNum, pageSize));
     }
 
-    @Data
-    public static class ApiResp<T> {
-        private int code;
-        private String msg;
-        private T data;
-
-        public static <T> ApiResp<T> ok(T data) {
-            ApiResp<T> r = new ApiResp<>();
-            r.code = 200;
-            r.msg = "success";
-            r.data = data;
-            return r;
-        }
-
-        public static ApiResp<Boolean> fail(String msg) {
-            ApiResp<Boolean> r = new ApiResp<>();
-            r.code = 200;
-            r.msg = msg;
-            r.data = false;
-            return r;
-        }
+    @GetMapping("/sent")
+    public ApiResp<IPage<NoticeMyListItem>> sentList(NoticeMyListReq req) {
+        return ApiResp.ok(noticeService.sentList(req));
     }
+
+
 }

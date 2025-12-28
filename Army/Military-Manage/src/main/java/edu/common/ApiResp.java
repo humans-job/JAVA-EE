@@ -30,7 +30,7 @@ public class ApiResp<T> {
 
     public static <T> ApiResp<T> fail(String msg) {
         ApiResp<T> r = new ApiResp<>();
-        r.code = 200;
+        r.code = 500;
         r.msg = msg;
         r.data = null;
         return r;

@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 public class NoticeMyListItem {
     private Long noticeId;
     private String title;
+    private String content;
     private Integer noticeType;
     private Integer status;
     private LocalDateTime createTime;
