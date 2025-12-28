@@ -22,5 +22,5 @@ public interface NoticeService {
 
     void complete(Long noticeId);
 
-    IPage<deptNotices> sentList(NoticeMyListReq req);
+    IPage<NoticeMyListItem> sentList(NoticeMyListReq req);
 }

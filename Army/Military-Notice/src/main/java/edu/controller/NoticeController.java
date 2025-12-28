@@ -54,7 +54,7 @@ public class NoticeController {
     }
 
     @GetMapping("/sent")
-    public ApiResp<IPage<deptNotices>> sentList(NoticeMyListReq req) {
+    public ApiResp<IPage<NoticeMyListItem>> sentList(NoticeMyListReq req) {
         return ApiResp.ok(noticeService.sentList(req));
     }
 
