@@ -5,10 +5,9 @@ CREATE TABLE sys_dept (
     dept_type   TINYINT COMMENT '部门类型：1=兵团机关, 2=师, 3=团, 4=营/连/分队',
     ancestors   VARCHAR(200) COMMENT '子级列表 (id查方便查询下级)',
     sort_order  INT COMMENT '显示顺序',
+    shape_type VARCHAR(200) COMMENT '图形种类',
     region_center POINT COMMENT '图形中心点，定位用',
-    regin_shape GEOMETRY COMMENT '图形形状，点集首尾点相接',
-    regin_radius INT COMMENT '管辖范围(直径)'
-
+    regin_shape GEOMETRY COMMENT '图形形状，点集首尾点相接'
     );
 
 CREATE TABLE sys_dept_belong (
