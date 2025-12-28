@@ -7,6 +7,7 @@ import edu.dto.LoginResp;
 import edu.service.LoginService;
 import edu.session.RedisSessionStore;
 import edu.util.Auth0JwtUtil;
+import edu.util.MD5Util;
 import lombok.RequiredArgsConstructor;
 import org.example.army.militarycommon.Entity.User;
 import org.example.army.militarycommon.mapper.UserMapper;
@@ -78,7 +79,7 @@ public class LoginServiceImpl implements LoginService {
         User user = userMapper.selectOne(new LambdaQueryWrapper<User>()
                 .eq(User::getUsername, username).last("limit 1"));
         if (user == null || user.getPassword().isBlank()) return null;
-        return password.equals(user.getPassword()) ? user : null;
+        return MD5Util.verifySaltedMd5(password,user.getPassword()) ? user : null;
     }
 
     private User loginByUsbKey(String username, String usbKey) {

@@ -16,6 +16,17 @@ public class SecurityUtil {
     private final HttpServletRequest request;
     private final Auth0JwtUtil auth0JwtUtil;
 
+    public Long getUserId() {
+        String token = getTokenFromHeader();
+        if (token == null) return null;
+        Long userId = tokenToUserId(token);
+        String sessionJson = sessionStore.get(userId);
+        if (sessionJson == null || sessionJson.isBlank()) {
+            throw new RuntimeException("登录态已过期，请重新登录");
+        }
+        return userId;
+    }
+
     /**
      * 根据 userId 从 Redis 会话中获取部门ID（deptId）
      */
