@@ -1,0 +1,39 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /api # 建议设置统一的上下文路径
+
+spring:
+  application:
+    name: military-army-platform
+
+  # 解决 Bean 名称冲突 (不同模块可能有同名类)
+  main:
+    allow-bean-definition-overriding: true
+
+  # 数据库配置
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://rm-2zezq0halh791d97sfo.mysql.rds.aliyuncs.com:3306/java_demo?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai
+    username: yh
+    password: jkl123456*
+
+  # Redis 配置 (Authenticate 模块需要)
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      database: 0
+
+# MyBatis Plus 全局配置
+mybatis-plus:
+  mapper-locations: classpath*:mapper/**/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl # 开发环境开启SQL日志
+
+# 日志配置
+logging:
+  level:
+    org.example: debug
+    org.springframework: info

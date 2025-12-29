@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.example.army</groupId>
+        <artifactId>army</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>Military-Bootstrap</artifactId>
+    <description>Military Bootstrap - 统一启动入口</description>
+
+    <dependencies>
+        <!-- 1. 引入所有业务模块 -->
+        <dependency>
+            <groupId>org.example.army</groupId>
+            <artifactId>Military-Authenticate</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.example.army</groupId>
+            <artifactId>Military-Manage</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.example.army</groupId>
+            <artifactId>Military-Notice</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.example.army</groupId>
+            <artifactId>Military-Work-Report</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.example.army</groupId>
+            <artifactId>Military-Leave-Report</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.example.army</groupId>
+            <artifactId>Military-Map</artifactId>
+        </dependency>
+
+        <!-- 2. 引入 Common (通常业务模块已依赖，这里显式引入也可) -->
+        <dependency>
+            <groupId>org.example.army</groupId>
+            <artifactId>Military-Common</artifactId>
+        </dependency>
+
+        <!-- 3. 单元测试 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <!-- 这是一个可执行的 Jar，必须包含此插件 -->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <!-- 指定主启动类，防止找到多个main方法报错 -->
+                    <mainClass>org.example.ArmyApplication</mainClass>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
+

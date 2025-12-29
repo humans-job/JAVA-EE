@@ -30,4 +30,14 @@ public interface WorkReportService extends IService<workReport> {
      * @return 分页结果
      */
     Page<workReport> queryReports(ReportQueryDTO dto);
+
+// 在 WorkReportService 接口中增加
+
+    /**
+     * 获取报表详情（带权限校验）
+     * @param id 报表ID
+     * @return 报表实体
+     */
+    workReport getReportDetail(Long id);
+
 }

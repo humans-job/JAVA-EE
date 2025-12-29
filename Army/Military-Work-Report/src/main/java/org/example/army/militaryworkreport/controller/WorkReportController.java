@@ -78,5 +78,17 @@ public class WorkReportController {
 
         return result(200, "查询成功", data);
     }
+    /**
+     * 接口4：查看报表详情
+     * 请求方式：GET
+     * 路径：/api/work/report/detail/{id}
+     */
+    @GetMapping("/detail/{id}")
+    public Map<String, Object> detail(@PathVariable Long id) {
+        // 修改点：调用自定义的业务方法，包含权限校验
+        workReport report = workReportService.getReportDetail(id);
+        return result(200, "查询成功", report);
+    }
+
 }
 

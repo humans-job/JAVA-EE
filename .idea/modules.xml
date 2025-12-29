@@ -2,10 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Army/Army.iml" filepath="$PROJECT_DIR$/Army/Army.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/JAVA-EE.iml" filepath="$PROJECT_DIR$/.idea/JAVA-EE.iml" />
-      <module fileurl="file://$PROJECT_DIR$/Army/Military-Common/Military-Common (1).iml" filepath="$PROJECT_DIR$/Army/Military-Common/Military-Common (1).iml" />
-      <module fileurl="file://$PROJECT_DIR$/Military-Work-Report.iml" filepath="$PROJECT_DIR$/Military-Work-Report.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Army/Military-Work-Report/Military-Work-Report.iml" filepath="$PROJECT_DIR$/Army/Military-Work-Report/Military-Work-Report.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Army/army.iml" filepath="$PROJECT_DIR$/Army/army.iml" />
     </modules>
   </component>
 </project>

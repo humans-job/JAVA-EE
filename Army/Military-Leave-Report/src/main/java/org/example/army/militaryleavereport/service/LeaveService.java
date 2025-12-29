@@ -15,7 +15,8 @@ public interface LeaveService extends IService<leaveReport> {
      * 1. 提交请假申请
      */
     void submitLeave(LeaveSubmitDTO dto);
-
+    // 【新增】修改并重新提交
+    void resubmitLeave(LeaveResubmitDTO dto);
     /**
      * 2. 审批请假
      */

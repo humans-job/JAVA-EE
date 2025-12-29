@@ -7,6 +7,7 @@ import org.example.army.militarycommon.Entity.deptRelation;
 import org.example.army.militarycommon.Entity.leaveReport;
 import org.example.army.militarycommon.Entity.militiaInfo;
 import org.example.army.militaryleavereport.DTO.*;
+import org.example.army.militaryauthenticate.util.SecurityUtil;
 import org.example.army.militarycommon.mapper.DeptRelationMapper;
 import org.example.army.militarycommon.mapper.LeaveReportMapper;
 import org.example.army.militarycommon.mapper.MilitiaInfoMapper;
@@ -29,15 +30,17 @@ public class LeaveServiceImpl extends ServiceImpl<LeaveReportMapper, leaveReport
     @Autowired
     private DeptRelationMapper deptRelationMapper;
 
+    @Autowired
+    private SecurityUtil securityUtil;
     /**
      * 1. 提交请假申请
      * 核心逻辑：自动查找用户的部门，并查找该部门的上级作为审批单位
      */
     @Override
     public void submitLeave(LeaveSubmitDTO dto) {
-        // 1. 校验与基础数据填充
+        Long currentUserId = securityUtil.getUserId();
         leaveReport leave = new leaveReport();
-        leave.setUserId(dto.getUserId());
+        leave.setUserId(currentUserId);
         leave.setLeaveReason(dto.getReason());
         leave.setStartTime(dto.getStartTime());
         leave.setEndTime(dto.getEndTime());
@@ -46,7 +49,7 @@ public class LeaveServiceImpl extends ServiceImpl<LeaveReportMapper, leaveReport
 
         // 2. 查找民兵所属部门 (militiaInfo 表)
         LambdaQueryWrapper<militiaInfo> userWrapper = new LambdaQueryWrapper<>();
-        userWrapper.eq(militiaInfo::getUserId, dto.getUserId());
+        userWrapper.eq(militiaInfo::getUserId, currentUserId);
         militiaInfo userProfile = militiaInfoMapper.selectOne(userWrapper);
 
         if (userProfile == null) {
@@ -80,23 +83,59 @@ public class LeaveServiceImpl extends ServiceImpl<LeaveReportMapper, leaveReport
     }
 
     /**
+     * 【新增】修改并重新提交
+     * 逻辑：只能修改自己的、且状态为“已驳回(2)”的假条
+     */
+    @Override
+    public void resubmitLeave(LeaveResubmitDTO dto) {
+        leaveReport leave = this.getById(dto.getLeaveId());
+        Long currentUserId = securityUtil.getUserId();
+
+        if (leave == null) {
+            throw new RuntimeException("假条不存在");
+        }
+        if (!leave.getUserId().equals(currentUserId)) {
+            throw new RuntimeException("无法修改他人的假条");
+        }
+        if (leave.getStatus() != 2) {
+            throw new RuntimeException("只能重新提交被驳回的申请");
+        }
+
+        // 更新信息
+        leave.setLeaveReason(dto.getReason());
+        leave.setStartTime(dto.getStartTime());
+        leave.setEndTime(dto.getEndTime());
+        leave.setApplyTime(LocalDateTime.now()); // 更新申请时间
+
+        // 状态重置为 0 (待审批)
+        leave.setStatus(0);
+        // 清空之前的审批意见，以免混淆
+        leave.setApproveOpinion(null);
+
+        this.updateById(leave);
+    }
+
+    /**
      * 2. 审批请假
      */
     @Override
     public void approveLeave(LeaveApproveDTO dto) {
         leaveReport leave = this.getById(dto.getLeaveId());
+        Long currentDeptId = securityUtil.getDeptId();
+
+        if (currentDeptId == null) {
+            throw new RuntimeException("审批失败：无法获取审批人部门信息");
+        }
         if (leave == null) {
             throw new RuntimeException("审批失败：请假申请不存在");
         }
 
+        if (!currentDeptId.equals(leave.getApproveDept())) {
+            throw new RuntimeException("您无权审批该申请");
+        }
         // 更新状态：1=通过(待销假)，2=驳回
         leave.setStatus(dto.getStatus());
         leave.setApproveOpinion(dto.getApproveOpinion());
-        // 记录审批人 (对应 DTO 中的 approveBy)
-        // 注意：实体类中 approveOpinion 类型是 Long，这通常存的是 ID 而不是文本意见
-        // 如果需要存文本，请修改实体类 leaveReport 的 approveOpinion 为 String 类型
-        // 这里暂时假设 DTO 传来的 opinion 是无效的，或者需要存入其他字段
-        // leave.setApproveOpinion( ... );
 
         this.updateById(leave);
     }
@@ -107,14 +146,17 @@ public class LeaveServiceImpl extends ServiceImpl<LeaveReportMapper, leaveReport
     @Override
     public void reportBack(LeaveReportBackDTO dto) {
         leaveReport leave = this.getById(dto.getLeaveId());
-
+        Long currentUserId = securityUtil.getUserId();
         // 只有状态为 1 (审批通过/待销假) 的才能销假
         if (leave == null || leave.getStatus() != 1) {
             throw new RuntimeException("操作失败：该申请未通过审批或状态不正确");
         }
 
+        if (!leave.getUserId().equals(currentUserId)) {
+            throw new RuntimeException("操作失败：只能销假自己的申请");
+        }
+
         // 记录销假时间和位置
-        // 注意：使用实体类中原有的拼写 (Bcak -> Back)
         leave.setReportBackTime(LocalDateTime.now());
         leave.setReportBackLocation(dto.getReportBackLocation());
 
@@ -132,6 +174,7 @@ public class LeaveServiceImpl extends ServiceImpl<LeaveReportMapper, leaveReport
     @Override
     public void confirmReportBack(LeaveConfirmDTO dto) {
         leaveReport leave = this.getById(dto.getLeaveId());
+        Long currentDeptId = securityUtil.getDeptId();
         if (leave == null) {
             throw new RuntimeException("申请不存在");
         }
@@ -141,9 +184,7 @@ public class LeaveServiceImpl extends ServiceImpl<LeaveReportMapper, leaveReport
 
         // 记录确认人
         // 实体类 reportBcakConfirmDept 是 String，DTO confirmBy 是 Long，做转换
-        if (dto.getConfirmBy() != null) {
-            leave.setReportBackConfirmDept(dto.getConfirmBy());
-        }
+        leave.setReportBackConfirmDept(currentDeptId);
 
         this.updateById(leave);
     }
@@ -151,33 +192,52 @@ public class LeaveServiceImpl extends ServiceImpl<LeaveReportMapper, leaveReport
     /**
      * 5. 查询台账 (含下级穿透查询 & 月份筛选)
      */
+    /**
+     * 【重写】查询逻辑
+     * 区分“查自己”和“查部门”
+     */
     @Override
     public Map<String, Object> getLeaveStats(LeaveQueryDTO dto) {
-        // 1. 构建分页
         Page<leaveReport> page = new Page<>(dto.getPageNum(), dto.getPageSize());
         LambdaQueryWrapper<leaveReport> wrapper = new LambdaQueryWrapper<>();
+        Long currentUserId = securityUtil.getUserId();
+        Long currentDeptId = securityUtil.getDeptId();
 
-        // 2. 部门穿透查询 (核心修改点)
-        if (dto.getDeptId() != null) {
-            // 步骤 A: 构造查询符合条件的部门ID的 SQL
-            // 逻辑: 选出 parent_id = dto.getDeptId() 的所有 child_id，再加上 dto.getDeptId() 自己
-            // 注意：这里为了简化 SQL 拼接，我们直接查找属于这些部门的 user_id
+        // --- 核心改动开始 ---
 
-            // 子查询 1: 找出该部门及其直属下级的所有部门 ID
-            // SQL 意图: SELECT id FROM sys_dept WHERE id = {deptId} OR id IN (SELECT child_id FROM sys_dept_belong WHERE parent_id = {deptId})
-            // 但为了性能和写法简便，我们直接查 militia_info
+        // 模式1: 查自己 (queryType = 2)
+        if (dto.getQueryType() != null && dto.getQueryType() == 2) {
+            wrapper.eq(leaveReport::getUserId, currentUserId);
 
-            // 最终目标 SQL:
-            // SELECT user_id FROM biz_militia_info WHERE dept_id = {deptId}
-            // OR dept_id IN (SELECT child_id FROM sys_dept_belong WHERE parent_id = {deptId})
+            // 需求：除已归档之外的。如果 status 没传，默认排除 3。
+            if (dto.getStatus() == null) {
+                wrapper.ne(leaveReport::getStatus, 3);
+            } else {
+                // 如果前端明确传了 status (比如想看历史归档)，则按传的查
+                wrapper.eq(leaveReport::getStatus, dto.getStatus());
+            }
+        }
+        // 模式2: 查下属 (queryType = 1 或 null) - 管理员用
+        else {
+            if (currentDeptId == null) throw new RuntimeException("无法获取部门信息");
 
-            String subDeptSql = "SELECT child_id FROM sys_dept_belong WHERE parent_id = " + dto.getDeptId();
-
-            String userIdsSql = "SELECT user_id FROM biz_militia_info WHERE dept_id = " + dto.getDeptId() +
+            // 部门穿透查询 SQL
+            String subDeptSql = "SELECT child_id FROM sys_dept_belong WHERE parent_id = " + currentDeptId;
+            String userIdsSql = "SELECT user_id FROM biz_militia_info WHERE dept_id = " + currentDeptId +
                     " OR dept_id IN (" + subDeptSql + ")";
-
-            // 步骤 B: 使用 inSql 限制 leaveReport 的 user_id
             wrapper.inSql(leaveReport::getUserId, userIdsSql);
+
+            // 状态筛选
+            if (dto.getStatus() != null) {
+                wrapper.eq(leaveReport::getStatus, dto.getStatus());
+            }
+
+            // 特殊过滤：只看“待销假确认”的
+            // 逻辑：状态是1 (已通过) 且 销假时间不为空 (已打卡)
+            if (Boolean.TRUE.equals(dto.getOnlyWaitConfirm())) {
+                wrapper.eq(leaveReport::getStatus, 1);
+                wrapper.isNotNull(leaveReport::getReportBackTime);
+            }
         }
 
         // 3. 月份筛选
