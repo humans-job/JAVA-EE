@@ -8,9 +8,9 @@
       <el-form ref="formRef" :model="form" :rules="rules" label-width="92px" @keyup.enter="onSubmit">
         <el-form-item label="认证方式" prop="authType">
           <el-radio-group v-model="form.authType">
-            <el-radio-button :label="1">账号密码</el-radio-button>
-            <el-radio-button :label="2">USB Key</el-radio-button>
-            <el-radio-button :label="3">证书</el-radio-button>
+            <el-radio-button :value="1">账号密码</el-radio-button>
+            <el-radio-button :value="2">USB Key</el-radio-button>
+            <el-radio-button :value="3">证书</el-radio-button>
           </el-radio-group>
         </el-form-item>
 

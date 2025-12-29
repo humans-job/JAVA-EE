@@ -12,7 +12,7 @@
 
     <el-empty description="模块开发中" />
     <div style="margin-top: 8px; text-align: center">
-      <el-button @click="$router.push('/app/profile')">查看个人信息</el-button>
+      <el-button @click="$router.push('/app/profile')"></el-button>
     </div>
   </el-card>
 </template>

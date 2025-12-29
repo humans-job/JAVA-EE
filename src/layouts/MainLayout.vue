@@ -27,7 +27,7 @@
           <span>地图态势</span>
         </el-menu-item>
 
-        <el-menu-item index="/app/leave">
+        <el-menu-item v-if="canLeave" index="/app/leave">
           <el-icon><Timer /></el-icon>
           <span>请销假</span>
         </el-menu-item>
@@ -90,8 +90,8 @@ const roleLabel = computed(() => USER_TYPE_LABEL[auth.userType] || `userType=${a
 
 const canArchive = computed(() => [3, 4, 5].includes(auth.userType))
 const canMap = computed(() => [2, 3, 4, 5].includes(auth.userType))
-const canReports = computed(() => [2, 3, 4, 5].includes(auth.userType))
-
+const canReports = computed(() => [2, 3].includes(auth.userType))
+const canLeave = computed(() => [1,2].includes(auth.userType))
 const pageTitle = computed(() => (route.meta?.title as string) || '控制台')
 
 async function onLogout() {

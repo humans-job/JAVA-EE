@@ -40,8 +40,8 @@
 
       <el-card class="mini" shadow="hover">
         <div class="mini__title">请销假</div>
-        <div class="mini__desc">模块暂未完成：已预留页面与路由。</div>
-        <el-button type="primary" plain @click="$router.push('/app/leave')">查看</el-button>
+        <div class="mini__desc">提交请假申请、审批管理、销假打卡与归档确认。</div>
+        <el-button type="primary" plain @click="$router.push('/app/leave')">进入</el-button>
       </el-card>
 
       <el-card class="mini" shadow="hover">

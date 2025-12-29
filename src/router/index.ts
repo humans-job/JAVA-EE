@@ -10,7 +10,9 @@ const NoticeCenterView = () => import('@/views/notice/NoticeCenterView.vue')
 const ArchiveListView = () => import('@/views/archive/ArchiveListView.vue')
 const PlaceholderModule = () => import('@/views/placeholder/PlaceholderModule.vue')
 const ProfileView = () => import('@/views/profile/ProfileView.vue')
-
+const ReportCenterView = () => import('@/views/report/ReportCenterView.vue')
+const LeaveCenterView = () => import('@/views/leave/LeaveCenterView.vue')
+const MapSituationView = () => import('@/views/map/MapSituationView.vue')
 declare module 'vue-router' {
   interface RouteMeta {
     requiresAuth?: boolean
@@ -46,9 +48,9 @@ const routes: RouteRecordRaw[] = [
       { path: 'notices', component: NoticeCenterView, meta: { requiresAuth: true, allowedUserTypes: [1,2,3,4,5], title: '通知教育' } },
       { path: 'archives', component: ArchiveListView, meta: { requiresAuth: true, allowedUserTypes: [3,4,5], title: '档案管理' } },
 
-      { path: 'map', component: PlaceholderModule, meta: { requiresAuth: true, allowedUserTypes: [2,3,4,5], title: '地图态势' }, props: { title: '地图态势', hint: '模块暂未完成：已预留页面与路由。' } },
-      { path: 'leave', component: PlaceholderModule, meta: { requiresAuth: true, allowedUserTypes: [1,2,3,4,5], title: '请销假' }, props: { title: '请销假', hint: '模块暂未完成：已预留页面与路由。' } },
-      { path: 'reports', component: PlaceholderModule, meta: { requiresAuth: true, allowedUserTypes: [2,3,4,5], title: '报表服务' }, props: { title: '报表服务', hint: '模块暂未完成：已预留页面与路由。' } },
+      { path: 'map', component: MapSituationView, meta: { requiresAuth: true, allowedUserTypes: [2,3,4,5], title: '地图态势' }},
+      { path: 'leave', component: LeaveCenterView, meta: { requiresAuth: true, allowedUserTypes: [1,2,3,4,5], title: '请销假' } },
+      { path: 'reports', component: ReportCenterView, meta: { requiresAuth: true, allowedUserTypes: [2,3], title: '报表服务' } },
 
       { path: 'profile', component: ProfileView, meta: { requiresAuth: true, allowedUserTypes: [1,2,3,4,5], title: '个人信息' } },
     ]

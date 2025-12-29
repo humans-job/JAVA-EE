@@ -7,7 +7,7 @@ import path from 'node:path'
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
-  const apiBase = env.VITE_API_BASE_URL || 'http://localhost:8080'
+  const apiBase = env.VITE_API_BASE_URL || 'http://127.0.0.1:8080'
 
   return {
     plugins: [vue()],
@@ -17,7 +17,7 @@ export default defineConfig(({ mode }) => {
       },
     },
     server: {
-      port: 5173,
+      port: 5180,
       proxy: {
         '/api': {
           target: apiBase,
