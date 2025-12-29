@@ -1,6 +1,7 @@
 package org.example.army.militaryauthenticate.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.army.militaryauthenticate.dto.LoginReq;
 import org.example.army.militaryauthenticate.dto.LoginResp;
@@ -48,6 +49,7 @@ public class LoginServiceImpl implements LoginService {
         session.setUserType(user.getUserType());
         session.setDeptId(user.getDeptId());
         session.setLoginIp(user.getLoginIp());
+
         session.setLoginTime(LocalDateTime.now());
 
         try {
