@@ -28,6 +28,7 @@ public class User implements Serializable {
     private String usbKey;
     private String certSn;
     private String loginIp;
+
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime loginTime;
 

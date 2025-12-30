@@ -1,11 +1,13 @@
 package org.example.army.militarymap.DTO;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Data;
 import org.example.army.militarycommon.Entity.Dept;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.Point;
 import org.n52.jackson.datatype.jts.GeometryDeserializer;
+import org.n52.jackson.datatype.jts.GeometrySerializer;
 
 @Data
 public class DeptGisDTO {
@@ -14,9 +16,11 @@ public class DeptGisDTO {
     private Integer deptType;
 
     // 这里的 Geometry 对象会被 JacksonConfig 中的 JtsModule 自动转为 GeoJSON
+    @JsonSerialize(using = GeometrySerializer.class)
     @JsonDeserialize(using = GeometryDeserializer.class)
     private Geometry regionShape;
 
+    @JsonSerialize(using = GeometrySerializer.class)
     @JsonDeserialize(using = GeometryDeserializer.class)
     private Point regionCenter;
 

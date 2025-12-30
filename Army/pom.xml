@@ -51,6 +51,10 @@
         <dependencies>
             <!-- 内部模块版本管理 -->
             <dependency>
+                <groupId>com.fasterxml.jackson.datatype</groupId>
+                <artifactId>jackson-datatype-jsr310</artifactId>
+            </dependency>
+            <dependency>
                 <groupId>org.example.army</groupId>
                 <artifactId>Military-Common</artifactId>
                 <version>${army.version}</version>
@@ -177,6 +181,7 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-autoconfigure</artifactId>
         </dependency>
+
         <!-- 移除 spring-security-webauthn 的全局依赖，按需在子模块引入 -->
     </dependencies>
 

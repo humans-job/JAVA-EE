@@ -86,7 +86,7 @@ CREATE TABLE biz_leave (
     end_time    DATETIME COMMENT '计划结束时间',
     
     apply_time  DATETIME COMMENT '申请发送时间',
-    status      TINYINT DEFAULT 0 COMMENT '状态：0=待审批, 1=审批通过(待销假), 2=已驳回, 3=已销假(归档)',
+    status      TINYINT DEFAULT 0 COMMENT '状态：0=待审批, 1=审批通过(待销假), 2=已驳回, 3=已销假(待确认),4=已归档',
     approve_dept  BIGINT COMMENT '审批单位ID',
     approve_opinion VARCHAR(200) COMMENT '审批意见',
     

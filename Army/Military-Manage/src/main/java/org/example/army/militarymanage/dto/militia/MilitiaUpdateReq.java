@@ -17,12 +17,16 @@ public class MilitiaUpdateReq  {// 明确指定主键列名，如果是雪花算
     private String phone;
     private String address;
     private String politicStatus;
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Asia/Shanghai")
+
     @JsonDeserialize(using = CustomLocalDateTimeDeserializer.class)
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime joinTime;
     private Integer auditStatus;
     private String auditFeedback;
     private Long auditDept;
     private Long createDept;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createTime;
 }

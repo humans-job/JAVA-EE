@@ -61,7 +61,7 @@ public class GisServiceImpl implements IGisService {
         if (dept == null) {
             throw new RuntimeException("部门不存在");
         }
-        // 使用第一步中定义的 DTO 静态方法进行转换
+
         return DeptGisDTO.fromEntity(dept);
     }
 

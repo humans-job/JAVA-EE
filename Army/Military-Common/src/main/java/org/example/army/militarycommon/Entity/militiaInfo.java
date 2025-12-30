@@ -22,12 +22,15 @@ public class militiaInfo  {
     private String phone;
     private String address;
     private String politicStatus;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+
+    @JsonFormat(pattern = "yyyy-MM-dd 00:00")
     private LocalDateTime joinTime;
+
     private Integer auditStatus;
     private String auditFeedback;
     private Long auditDept;
     private Long createDept;
+
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createTime;
 }

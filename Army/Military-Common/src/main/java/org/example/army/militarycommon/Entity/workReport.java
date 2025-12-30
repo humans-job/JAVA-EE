@@ -19,8 +19,10 @@ public class workReport {
     private String reportMonth;
     private Integer status;
     private Long approveDeptId;
+
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime approveTime;
+
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createTime;
 }

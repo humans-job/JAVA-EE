@@ -1,5 +1,6 @@
 package org.example.army.militarymap.controller;
 
+import org.example.army.militaryauthenticate.common.ApiResp;
 import org.example.army.militarymap.DTO.DeptGisDTO;
 import org.example.army.militarymap.service.IGisService;
 import org.example.army.militaryauthenticate.util.SecurityUtil;
@@ -47,20 +48,29 @@ public class GisController {
      * 2. deptId 改为由 SecurityUtil 自动获取
      */
     @GetMapping("/region")
-    public DeptGisDTO getRegion() {
-        // 自动抓取当前登录用户的部门ID
+    public ApiResp<DeptGisDTO> getRegion() {
         Long deptId = securityUtil.getDeptId();
-        return gisService.getDeptGisData(deptId);
+
+        if (deptId == null) {
+            return ApiResp.fail("无法获取当前用户的部门信息");
+        }
+
+        DeptGisDTO data = gisService.getDeptGisData(deptId);
+
+        // ✅ 使用 ApiResp.ok() 包裹返回
+        return ApiResp.ok(data);
     }
 
     @GetMapping("/situation/subordinates")
-    public List<DeptGisDTO> getSubordinates() {
+    public ApiResp<List<DeptGisDTO>> getSubordinates() {
 
         Long parentId = securityUtil.getDeptId();
             if (parentId == null) {
                 throw new RuntimeException("无法获取当前用户的部门信息");
             }
-        return gisService.getSubordinateSituation(parentId);
+        List<DeptGisDTO> list = gisService.getSubordinateSituation(parentId);
+        return ApiResp.ok(list);
+
     }
 
     /**
@@ -68,11 +78,13 @@ public class GisController {
      * URL示例: /api/gis/situation/layer?type=30
      */
     @GetMapping("/situation/layer")
-    public List<DeptGisDTO> getLayerData(@RequestParam Integer type) {
+    public ApiResp<List<DeptGisDTO>> getLayerData(@RequestParam Integer type) {
         // 真实场景下，此处应校验当前用户是否为“兵团级(10)”用户
-        // 只有兵团级用户才有权限查看全疆数据
 
-        return gisService.getSituationByLayer(type);
+        List<DeptGisDTO> list = gisService.getSituationByLayer(type);
+
+        // ✅ 关键修改：用 ApiResp.success() 包裹返回结果
+        return ApiResp.ok(list);
     }
 }
 

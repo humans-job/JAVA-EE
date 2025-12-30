@@ -171,7 +171,7 @@ public class MilitiaArchiveServiceImpl implements MilitiaArchiveService {
     public void divisionAudit(MilitiaAuditReq req) {
         Long currentDeptId = securityUtil.getDeptId();
         Dept currentDept = deptMapper.selectById(currentDeptId);
-        if (currentDept != null && !Integer.valueOf(2).equals(currentDept.getDeptType())) {
+        if (currentDept != null && !Integer.valueOf(4).equals(currentDept.getDeptType())) {
             throw new IllegalArgumentException("仅师机关可审核");
         }
 
@@ -227,7 +227,7 @@ public class MilitiaArchiveServiceImpl implements MilitiaArchiveService {
         if (Integer.valueOf(3).equals(currentType)) {
             // 团：只能看本团
             qw.eq(militiaInfo::getDeptId, currentDeptId);
-        } else if (Integer.valueOf(2).equals(currentType)) {
+        } else if (Integer.valueOf(4).equals(currentType)) {
             // 师：可看所有下属团
             List<Long> childDeptIds = deptRelationMapper.selectList(new LambdaQueryWrapper<deptRelation>()
                             .eq(deptRelation::getParentId, currentDeptId))
@@ -351,7 +351,7 @@ public class MilitiaArchiveServiceImpl implements MilitiaArchiveService {
             }
             return;
         }
-        if (Integer.valueOf(2).equals(currentType)) {
+        if (Integer.valueOf(4).equals(currentType)) {
             List<Long> childDeptIds = deptRelationMapper.selectList(new LambdaQueryWrapper<deptRelation>()
                             .eq(deptRelation::getParentId, currentDeptId))
                     .stream().map(deptRelation::getChildId).toList();
@@ -369,7 +369,7 @@ public class MilitiaArchiveServiceImpl implements MilitiaArchiveService {
         for (int i = 0; i < 10 && cursor != null && cursor > 0; i++) {
             Dept d = deptMapper.selectById(cursor);
             if (d == null) return null;
-            if (Integer.valueOf(2).equals(d.getDeptType())) {
+            if (Integer.valueOf(4).equals(d.getDeptType())) {
                 return d.getDeptId();
             }
 

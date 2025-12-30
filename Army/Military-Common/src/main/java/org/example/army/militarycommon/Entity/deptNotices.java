@@ -4,6 +4,7 @@ package org.example.army.militarycommon.Entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -17,6 +18,9 @@ public class deptNotices  {
     private String content;
     private Integer type;
     private Long senderId;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime sendTime;
+
     private Integer status;
 }

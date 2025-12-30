@@ -3,6 +3,7 @@ package org.example.army.militarycommon.Entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import java.time.LocalDateTime;
 
@@ -14,13 +15,24 @@ public class leaveReport {
     private Long userId;
     private Long deptId;
     private String leaveReason;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime startTime;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime endTime;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime applyTime;
+
     private Integer status;
     private Long approveDept;
     private String approveOpinion;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime reportBackTime;
+
     private String reportBackLocation;
+
     private Long reportBackConfirmDept;
 }

@@ -29,22 +29,39 @@ public class LeaveController {
         return result(200, "申请提交成功", null);
     }
 
+    /**
+     * 重新提交请假（驳回后修改）
+     */
+    @PutMapping("/resubmit")
+    public Map<String, Object> resubmit(@RequestBody LeaveResubmitDTO dto) {
+        leaveService.resubmitLeave(dto);
+        return result(200, "重新提交成功", null);
+    }
+
     @PostMapping("/approve")
     public Map<String, Object> approve(@RequestBody LeaveApproveDTO dto) {
         leaveService.approveLeave(dto);
         return result(200, "审批完成", null);
     }
 
+    /**
+     * 民兵销假打卡
+     * 状态: 1(待销假) → 3(已销假待确认)
+     */
     @PutMapping("/report_back")
     public Map<String, Object> reportBack(@RequestBody LeaveReportBackDTO dto) {
         leaveService.reportBack(dto);
-        return result(200, "销假信息已记录", null);
+        return result(200, "销假打卡成功，等待管理员确认归档", null);
     }
 
+    /**
+     * 管理员确认归档
+     * 状态: 3(已销假待确认) → 4(已归档)
+     */
     @PostMapping("/confirm")
     public Map<String, Object> confirm(@RequestBody LeaveConfirmDTO dto) {
         leaveService.confirmReportBack(dto);
-        return result(200, "销假确认成功", null);
+        return result(200, "归档成功", null);
     }
 
     @GetMapping("/list")
@@ -53,4 +70,5 @@ public class LeaveController {
         return result(200, "查询成功", data);
     }
 }
+
 

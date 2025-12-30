@@ -18,7 +18,7 @@ public class MilitiaImportItem {
     /**
      * 前端如果传字符串，建议："yyyy-MM-dd"。
      */
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Asia/Shanghai")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonDeserialize(using = CustomLocalDateTimeDeserializer.class)
     private LocalDateTime joinTime;
 }
