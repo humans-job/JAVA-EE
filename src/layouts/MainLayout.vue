@@ -12,7 +12,7 @@
           <span>我的主页</span>
         </el-menu-item>
 
-        <el-menu-item index="/app/notices">
+        <el-menu-item v-if="canNotice"index="/app/notices">
           <el-icon><BellFilled /></el-icon>
           <span>通知教育</span>
         </el-menu-item>
@@ -87,7 +87,7 @@ auth.initFromStorage()
 const active = computed(() => route.path)
 const homePath = computed(() => HOME_PATH_BY_USER_TYPE[auth.userType] || '/app/notices')
 const roleLabel = computed(() => USER_TYPE_LABEL[auth.userType] || `userType=${auth.userType}`)
-
+const canNotice = computed(() => [3, 4].includes(auth.userType))
 const canArchive = computed(() => [3, 4, 5].includes(auth.userType))
 const canMap = computed(() => [2, 3, 4, 5].includes(auth.userType))
 const canReports = computed(() => [2, 3].includes(auth.userType))

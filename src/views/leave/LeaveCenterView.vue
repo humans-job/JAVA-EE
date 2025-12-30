@@ -25,7 +25,7 @@
         <el-statistic title="待审批" :value="stats.pendingCount || 0" />
       </el-card>
       <el-card class="stat-card" shadow="hover">
-        <el-statistic title="已通过" :value="stats.approvedCount || 0" />
+        <el-statistic title="待销假" :value="stats.approvedCount || 0" />
       </el-card>
       <el-card class="stat-card" shadow="hover">
         <el-statistic title="已驳回" :value="stats.rejectedCount || 0" />
@@ -37,7 +37,6 @@
         <el-statistic title="已归档" :value="stats.confirmedCount || 0" />
       </el-card>
     </div>
-
     <!-- 筛选条件 -->
     <el-form :inline="true" :model="query" class="filters">
       <el-form-item label="月份">
@@ -209,7 +208,7 @@
             type="datetime"
             placeholder="选择开始时间"
             format="YYYY-MM-DD HH:mm"
-            value-format="YYYY-MM-DDTHH:mm:ss"
+            value-format="YYYY-MM-DD HH:mm:ss"
             style="width: 100%"
         />
       </el-form-item>
@@ -220,7 +219,7 @@
             type="datetime"
             placeholder="选择结束时间"
             format="YYYY-MM-DD HH:mm"
-            value-format="YYYY-MM-DDTHH:mm:ss"
+            value-format="YYYY-MM-DD HH:mm:ss"
             style="width: 100%"
         />
       </el-form-item>
@@ -254,7 +253,7 @@
             type="datetime"
             placeholder="选择开始时间"
             format="YYYY-MM-DD HH:mm"
-            value-format="YYYY-MM-DDTHH:mm:ss"
+            value-format="YYYY-MM-DD HH:mm:ss"
             style="width: 100%"
         />
       </el-form-item>
@@ -265,7 +264,7 @@
             type="datetime"
             placeholder="选择结束时间"
             format="YYYY-MM-DD HH:mm"
-            value-format="YYYY-MM-DDTHH:mm:ss"
+            value-format="YYYY-MM-DD HH:mm:ss"
             style="width: 100%"
         />
       </el-form-item>
@@ -413,7 +412,7 @@ async function load(page?: number) {
     })
 
     const data = r.data.data
-    rows.value = data?.records || []
+    rows.value = data?.list  || []
     total.value = Number(data?.total || 0)
 
     // 保存统计数据

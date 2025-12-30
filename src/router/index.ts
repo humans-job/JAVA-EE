@@ -45,11 +45,11 @@ const routes: RouteRecordRaw[] = [
       { path: 'division/home', component: RoleHome, meta: { requiresAuth: true, allowedUserTypes: [4], title: '主页' }, props: { roleKey: 'division' } },
       { path: 'corps/home', component: RoleHome, meta: { requiresAuth: true, allowedUserTypes: [5], title: '主页' }, props: { roleKey: 'corps' } },
 
-      { path: 'notices', component: NoticeCenterView, meta: { requiresAuth: true, allowedUserTypes: [1,2,3,4,5], title: '通知教育' } },
+      { path: 'notices', component: NoticeCenterView, meta: { requiresAuth: true, allowedUserTypes: [3,4], title: '通知教育' } },
       { path: 'archives', component: ArchiveListView, meta: { requiresAuth: true, allowedUserTypes: [3,4,5], title: '档案管理' } },
 
       { path: 'map', component: MapSituationView, meta: { requiresAuth: true, allowedUserTypes: [2,3,4,5], title: '地图态势' }},
-      { path: 'leave', component: LeaveCenterView, meta: { requiresAuth: true, allowedUserTypes: [1,2,3,4,5], title: '请销假' } },
+      { path: 'leave', component: LeaveCenterView, meta: { requiresAuth: true, allowedUserTypes: [1,2], title: '请销假' } },
       { path: 'reports', component: ReportCenterView, meta: { requiresAuth: true, allowedUserTypes: [2,3], title: '报表服务' } },
 
       { path: 'profile', component: ProfileView, meta: { requiresAuth: true, allowedUserTypes: [1,2,3,4,5], title: '个人信息' } },

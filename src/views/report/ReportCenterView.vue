@@ -97,8 +97,8 @@
 
           <!-- 待审批视图：显示审批按钮 -->
           <template v-if="activeTab === 'pending' && row.status === 0">
-            <el-button link type="success" @click="handleApprove(row.id, 1)">通过</el-button>
-            <el-button link type="danger" @click="handleApprove(row.id, 2)">驳回</el-button>
+            <el-button link type="success" @click="handleApprove(row.reportId, 1)">通过</el-button>
+            <el-button link type="danger" @click="handleApprove(row.reportId, 2)">驳回</el-button>
           </template>
         </template>
       </el-table-column>
@@ -147,10 +147,10 @@
     <template #footer>
       <!-- 详情弹窗中也可审批 -->
       <template v-if="activeTab === 'pending' && detailRow?.status === 0">
-        <el-button type="success" @click="handleApprove(detailRow!.id, 1); detailVisible = false">
+        <el-button type="success" @click="handleApprove(detailRow!.reportId, 1); detailVisible = false">
           通过
         </el-button>
-        <el-button type="danger" @click="handleApprove(detailRow!.id, 2); detailVisible = false">
+        <el-button type="danger" @click="handleApprove(detailRow!.reportId, 2); detailVisible = false">
           驳回
         </el-button>
       </template>
@@ -302,7 +302,7 @@ const detailRow = ref<WorkReport | null>(null)
 
 async function openDetail(row: WorkReport) {
   try {
-    const res = await apiReportDetail(row.id)
+    const res = await apiReportDetail(row.reportId)
     detailRow.value = res.data || row
     detailVisible.value = true
   } catch (e: any) {

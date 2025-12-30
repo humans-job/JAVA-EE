@@ -107,8 +107,8 @@
         <el-date-picker
           v-model="editForm.joinTime"
           type="date"
-          placeholder="选择日期"
-          value-format="YYYY-MM-DDT00:00:00"
+          placeholder="选择时间"
+          value-format="YYYY-MM-DD 00:00"
           style="width: 100%"
         />
       </el-form-item>

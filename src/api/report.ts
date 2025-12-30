@@ -75,7 +75,7 @@ export interface ReportQueryParams {
  * 报表实体 - 对应后端 workReport 实体
  */
 export interface WorkReport {
-    id: number
+    reportId: number
     deptId: number          // 提交部门ID
     title: string           // 标题
     content: string         // 内容
